@@ -7,7 +7,7 @@ module.exports = {
         "prettier",
         "eslint:recommended",
         "plugin:react/recommended",
-        "plugin:@typescript-eslint/eslint-recommended"
+        "plugin:@typescript-eslint/recommended",
     ],
     "globals": {
         "Atomics": "readonly",
@@ -28,5 +28,9 @@ module.exports = {
     ],
     "rules": {
         "prettier/prettier": "error",
+        "react/prop-types":[0],
+        "@typescript-eslint/no-explicit-any":[0],
+        "@typescript-eslint/explicit-function-return-type":[0],
+        "@typescript-eslint/no-use-before-define":[0],
     }
 };
