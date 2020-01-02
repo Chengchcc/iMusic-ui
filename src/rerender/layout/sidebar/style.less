@@ -1,0 +1,32 @@
+@import '../../theme.less';
+
+@sider-width: 80px;
+@sider-height: 400px;
+
+.sidebar-container {
+    position: fixed;
+    left: -70px;
+    bottom: calc(100% - @sider-height - 20%);
+    height: @sider-height;
+    width: @sider-width + 20;
+    z-index: 10;
+
+    .sidebar {
+        background-color: @main-color;
+        position: relative;
+        left: 0;
+        width: @sider-width;
+        height: @sider-height;
+        transition-property: all;
+        transition-duration: 0.5s;
+        transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+        transition-delay: 0s;
+    }
+}
+
+.sidebar-container:hover {
+    .sidebar {
+        transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
+        transform: translateX(70px);
+    }
+}

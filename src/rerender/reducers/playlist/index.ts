@@ -17,7 +17,10 @@ const defaultState = fromJS({
 
 export default (state = defaultState, action: any) => {
     if (action.type === "playlist/swithMode") {
-        state.set("mode", action.payload.mode);
+        return state.set("mode", action.payload.mode);
+    }
+    if (action.type === "playlist/playSong") {
+        return state.set("playing", action.payload.flag);
     }
     return state;
 };

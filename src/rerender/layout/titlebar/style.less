@@ -50,11 +50,11 @@
     height: 100%;
 }
 
-.buttin-mac {
-    width: 10px;
-  height: 10px;
+.button-mac {
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
-  margin: 0px 4px;
+  margin: 4px 4px;
   line-height: 0;
   padding: 0px;
   -webkit-app-region: no-drag;
@@ -65,29 +65,29 @@
   box-shadow: none;
 }
 
-.buttin-mac-maximize {
-    .buttin-mac();
+.button-mac-maximize {
+    .button-mac();
     border: 1px solid #12ac28;
     background-color: #28c940;
     & svg.fullscreen-svg {
-      width: 6px;
-      height: 6px;
+      width: 9px;
+      height: 9px;
       position: absolute;
-      top: 1px;
-      left: 1px;
+      top: 2px;
+      left: 2px;
       opacity: 0;
     }
     & svg.maximize-svg {
-      width: 6px;
-      height: 6px;
+      width: 9px;
+      height: 9px;
       position: absolute;
-      top: 1px;
-      left: 1px;
+      top: 2px;
+      left: 2px;
       opacity: 0;
       display: none;
     }
     &:hover {
-      svg.fullscreen-svg-showmaximize {
+      svg.fullscreen-svg-not {
         opacity: 0;
         display: none;
       }
@@ -95,7 +95,7 @@
         opacity: 1;
         display: block;
       }
-      svg.maximize-svg-showmaximize {
+      svg.maximize-svg-not {
         opacity: 0;
         display: none;
       }
@@ -111,16 +111,16 @@
 }
 
 .button-mac-close {
-    .buttin-mac();
+    .button-mac();
     border: 1px solid #e2463f;
     background-color: #ff5f57;
     margin-left: 10px;
     & svg {
-      width: 4px;
-      height: 4px;
+      width: 10px;
+      height: 10px;
       position: absolute;
-      top: 2px;
-      left: 2px;
+      top: 1px;
+      left: 1px;
       opacity: 0;
     }
     &:hover {
@@ -134,13 +134,13 @@
     }
 }
 
-.buttin-mac-minimize {
-    .buttin-mac();
+.button-mac-minimize {
+    .button-mac();
     border: 1px solid #e1a116;
     background-color: #ffbd2e;
     & svg {
-      width: 6px;
-      height: 6px;
+      width: 10px;
+      height: 10px;
       position: absolute;
       top: 1px;
       left: 1px;

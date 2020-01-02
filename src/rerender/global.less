@@ -1,3 +1,8 @@
+@font-face {
+	font-family: 'groove style';
+	src: url('./assets/groove.ttf') format('truetype');
+}
+
 html {
     margin:0 0;
     padding: 0 0;
@@ -9,4 +14,44 @@ html {
             width: 100%;
         }
     }
+}
+
+button{
+	display: block;
+	-webkit-app-region: no-drag;
+	border: 0;
+	padding: 0;
+	outline: 0;
+	background-color: rgba(0,0,0,0);
+}
+
+button.previous::after{
+	content: "\e892";
+}
+button.play::after{
+	content: "\e768";
+}
+button.pause::after{
+	content: "\e769";
+}
+button.next::after{
+	content: "\e893";
+}
+button.random::after{
+	content: "\e8b1";
+}
+button.sequence::after{
+	content: "\e8ee";
+}
+button.loop::after{
+	content: "\e8ed";
+}
+button.list::after{
+	content: "\e93f";
+}
+button.download::after{
+	content: "\e896";
+}
+button.fold::after{
+	content: "\e70d";
 }

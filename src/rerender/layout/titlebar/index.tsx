@@ -12,7 +12,6 @@ const Titlebar: React.FC<{ title: string }> = (props: any) => {
     const [isMaximized, setIsMaximized] = React.useState(
         currentWindow.isMaximized()
     );
-
     React.useEffect(() => {
         if (!isWindows) {
             document.body.addEventListener("keydown", handleKeyDown);
@@ -68,6 +67,7 @@ const Titlebar: React.FC<{ title: string }> = (props: any) => {
                 }
             } else {
                 currentWindow.setFullScreen(!currentWindow.isFullScreen());
+                setIsMaximized(!currentWindow.isFullScreen());
             }
         }
     };
@@ -96,11 +96,7 @@ const Titlebar: React.FC<{ title: string }> = (props: any) => {
                     onClick={handleMaximize}
                 >
                     <svg
-                        className={
-                            keyAltDown
-                                ? "fullscreen-svg"
-                                : "fullscreen-svg-showMaximize"
-                        }
+                        className={"fullscreen-svg"}
                         x="0px"
                         y="0px"
                         viewBox="0 0 6 5.9"
@@ -115,11 +111,7 @@ const Titlebar: React.FC<{ title: string }> = (props: any) => {
                         ></path>
                     </svg>
                     <svg
-                        className={
-                            keyAltDown
-                                ? "maximize-svg"
-                                : "maximize-svg-showMaximize"
-                        }
+                        className={"maximize-svg"}
                         x="0px"
                         y="0px"
                         viewBox="0 0 7.9 7.9"
@@ -221,7 +213,9 @@ const Titlebar: React.FC<{ title: string }> = (props: any) => {
 
     return (
         <div
-            className={isWindows ? "title-container-win" : "title-cotainer-mac"}
+            className={
+                isWindows ? "title-container-win" : "title-container-mac"
+            }
         >
             {elements}
         </div>

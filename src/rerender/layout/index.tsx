@@ -1,12 +1,14 @@
 import React from "react";
 import TitleBar from "./titlebar";
 import PlayerBar from "./playerbar";
-const Layout = ({ children }) => {
+import Sidebar from "./sidebar";
+const Layout: React.FC = props => {
     return (
         <>
             <TitleBar title={"IMusic"} />
-            {children}
+            {props.children}
             <PlayerBar />
+            <Sidebar />
         </>
     );
 };
