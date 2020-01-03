@@ -69,10 +69,19 @@ const Playerbar = () => {
                 <button
                     className="sound"
                     title="sound"
+                    id="sound-button"
                     onClick={() => setShowSound(true)}
                 >
                     {showSound ? (
-                        <SoundController hide={() => setShowSound(false)} />
+                        <SoundController
+                            hide={() => setShowSound(false)}
+                            onBlur={() => {
+                                const element = document.getElementById(
+                                    "sound-button"
+                                );
+                                element?.className = "sound";
+                            }}
+                        />
                     ) : null}
                 </button>
                 <button className="list" title="list" />
