@@ -6,55 +6,126 @@
     right: 0;
     width: 100%;
     height: @player-height;
-    background-color: @main-color  ;
+	background-color: @main-color ;
+	box-shadow: 0px -5px 10px #c0bfbf;
     z-index: 10;
 }
+
 .mediainfo {
     bottom: 0;
-	left: 0;
-	height: @player-height;
-	width: 282px;
-	overflow: hidden;
-	cursor: pointer;
-	-webkit-app-region: no-drag;
-}  
+    left: 0;
+    height: @player-height;
+    width: 282px;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-app-region: no-drag;
+}
+
 .timeline {
     bottom: 0px;
-	left: 300px;
-	height: @player-height;
-	width: calc(100% - 300px - 270px);
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-    
-} 
+    left: 300px;
+    height: @player-height;
+    width: calc(100% - 300px - 350px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .time {
+        font-size: 11px;
+        color: #ffffff;
+        line-height: 66px;
+        /*for vertical center*/
+        height: 64px;
+        cursor: default;
+    }
+
+    .progressbar {
+        -webkit-app-region: no-drag;
+        margin: 15px 12px 17px 12px;
+        /*15+17 for vertical center*/
+        height: 32px;
+        flex-basis: auto;
+        flex-grow: 1;
+        cursor: pointer;
+        overflow: hidden;
+        white-space: nowrap;
+
+        .filler {
+            position: relative;
+            display: inline-block;
+            margin: 17px 0;
+            height: 2px;
+        }
+
+        .played {
+            background-color: rgba(255, 255, 255, 1);
+            transition: width 0.08s linear;
+        }
+
+        .unplayed {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .cursor {
+            position: relative;
+            display: inline-block;
+            margin: 9px 0px 9px 0px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            box-sizing: border-box;
+            border: 2px solid #ffffff;
+            transition: all 0.04s linear;
+
+            &:hover {
+                border: 2px solid rgba(255, 255, 255, 0.6);
+            }
+
+            &::active {
+                background-color: #ffffff;
+            }
+        }
+    }
+
+}
+
+
 .controller {
     bottom: 0px;
-	left: calc(100% - 252px);
-	height: @player-height;
-	width: 240px;
-	display: flex;
+    left: calc(100% - 322px);
+    height: @player-height;
+    width: 300px;
+    display: flex;
 }
+
 .mediainfo,
 .timeline,
 .controller {
     position: absolute;
 }
 
-.controller> button {
+.controller>button {
     font-family: "groove style";
-	width: 36px;height: 36px;
-	margin: auto;
-	border-radius: 50%;
-	color: rgba(255,255,255,1);
-	font-size: 20px;
+    width: 36px;
+    height: 36px;
+    margin: auto;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 1);
+    font-size: 20px;
     cursor: pointer;
     transition: all 0.08s linear;
+
     &:hover {
-        color: rgba(255,255,255,0.4);
+        color: rgba(255, 255, 255, 0.4);
     }
-    &:active{
-        color: rgba(255,255,255,1);
-	    background-color: rgba(0,0,0,0.2);
+
+    &:active {
+        color: rgba(255, 255, 255, 1);
+        background-color: rgba(0, 0, 0, 0.2);
     }
+}
+.controller>button.sound>div {
+	position: absolute;
+	bottom: @player-height;
 }

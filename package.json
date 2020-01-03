@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint src/rerender/**/*.{ts,tsx} --fix",
-    "dev": "webpack-dev-server --config ./scripts/webpack.dev.js  --hot"
+    "start": "webpack-dev-server --config ./scripts/webpack.dev.js  --hot"
   },
   "dependencies": {
     "@material-ui/core": "^4.8.1",

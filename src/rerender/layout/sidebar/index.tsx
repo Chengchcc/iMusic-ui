@@ -25,7 +25,12 @@ const Sidebar = () => {
 
     return (
         <div id="sidebar-container" className="sidebar-container ">
-            <div className="sidebar"></div>
+            <div className="sidebar">
+                <button className="search" />
+                <button className="user" />
+                <button className="favorite" />
+                <button className="setting" />
+            </div>
         </div>
     );
 };

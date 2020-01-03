@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { createAction } from "../../util/aciton";
 import store from "../../reducers";
-
+import SoundController from "../../components/sound_controller";
 import "./style.less";
 
 const getMode = (id: number) => {
@@ -39,10 +39,20 @@ const Playerbar = () => {
     const playing = useSelector((state: any) =>
         state.get("playlist").get("playing")
     );
+    const [showSound, setShowSound] = React.useState(false);
+
     return (
         <div className="player-container">
             <div className="mediainfo"></div>
-            <div className="timeline"></div>
+            <div className="timeline">
+                <div className="time played">0:00</div>
+                <div className="progressbar">
+                    <div className="filler played"></div>
+                    <div className="cursor"></div>
+                    <div className="filler unplayed"></div>
+                </div>
+                <div className="time total">0:00</div>
+            </div>
             <div className="controller">
                 <button className="previous" title="previous" />
                 <button
@@ -56,6 +66,15 @@ const Playerbar = () => {
                     onClick={() => swithMode(mode)}
                     title={`${getMode(mode)}`}
                 />
+                <button
+                    className="sound"
+                    title="sound"
+                    onClick={() => setShowSound(true)}
+                >
+                    {showSound ? (
+                        <SoundController hide={() => setShowSound(false)} />
+                    ) : null}
+                </button>
                 <button className="list" title="list" />
             </div>
         </div>

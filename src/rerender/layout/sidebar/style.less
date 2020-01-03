@@ -1,17 +1,17 @@
 @import '../../theme.less';
 
-@sider-width: 80px;
+@sider-width: 70px;
 @sider-height: 400px;
 
 .sidebar-container {
     position: fixed;
-    left: -70px;
+    left: -60px;
     bottom: calc(100% - @sider-height - 20%);
     height: @sider-height;
     width: @sider-width + 20;
-    z-index: 10;
 
     .sidebar {
+        border-radius: 999px;
         background-color: @main-color;
         position: relative;
         left: 0;
@@ -21,6 +21,35 @@
         transition-duration: 0.5s;
         transition-timing-function: cubic-bezier(0.6, -0.28, 0.735, 0.045);
         transition-delay: 0s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        padding: 20px 0;
+        box-shadow: 5px -5px 10px #c0bfbf;
+        z-index: 20;
+    }
+
+}
+
+.sidebar>button {
+    font-family: "groove style";
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin: auto;
+    color: rgba(255, 255, 255, 1);
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.08s linear;
+
+    &:hover {
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    &:active {
+        color: rgba(255, 255, 255, 1);
+        background-color: rgba(0, 0, 0, 0.2);
     }
 }
 
