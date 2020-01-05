@@ -9,6 +9,7 @@
 	background-color: @main-color ;
 	box-shadow: 0px -5px 10px #c0bfbf;
     z-index: 10;
+    user-select:none;
 }
 
 .mediainfo {
@@ -19,9 +20,50 @@
     overflow: hidden;
     cursor: pointer;
     -webkit-app-region: no-drag;
+    .cover,
+    .related,
+    .song {
+        position: absolute;
+    }
+    .cover {
+        margin: 8px;
+        width: 48px;
+        height: 48px;
+        background-color: rgba(255,255,255,0.1);
+        background-position: center;
+        background-size: cover;
+        left: 0px;
+        bottom: 0px;
+        z-index: 0;
+    }
+    .song,
+    .related {
+        color: #ffffff;
+        left: 64px;
+        max-width: 210px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        z-index: 2;
+    }
+    .song{
+        bottom: 34px;
+        font-size: 15px;
+        &:before {
+            content: attr(name);
+        }
+    }
+    .related {
+        bottom: 12px;
+	    font-size: 14px;
+        opacity: 0.7;
+        &:before {
+            content: attr(artist);
+        }
+    }
 }
 
-.timeline {
+.timeline{
     bottom: 0px;
     left: 300px;
     height: @player-height;
@@ -39,7 +81,7 @@
         cursor: default;
     }
 
-    .progressbar {
+    .progressbar{
         -webkit-app-region: no-drag;
         margin: 15px 12px 17px 12px;
         /*15+17 for vertical center*/
@@ -82,7 +124,7 @@
                 border: 2px solid rgba(255, 255, 255, 0.6);
             }
 
-            &::active {
+            &:active {
                 background-color: #ffffff;
             }
         }
@@ -125,7 +167,20 @@
         background-color: rgba(0, 0, 0, 0.2);
     }
 }
-.controller>button.sound>div {
+.controller> div.volume-controller {
 	position: absolute;
-	bottom: @player-height;
+    bottom: calc(@player-height - 4px);
+}
+.controller> div.playBar-playList{
+	position: absolute;
+    bottom: calc(@player-height - 4px);
+    right: 4px;
+}
+
+
+.controller>button:first-of-type{
+    margin-left: 0px;
+}
+.controller>button:last-of-type{
+    margin-right: 0px;
 }

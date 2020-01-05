@@ -1,0 +1,62 @@
+@import '../../theme.less';
+
+
+
+.volume-controller {
+    width: 30px;
+	height: 100px;
+	background-color: #fff;
+    box-shadow: 0 -10px 10px #cecece;
+}
+.volume-controller:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: #fff;
+    left: 5px;
+    bottom: -20px;
+}
+
+.volume-progress {
+    position: relative;
+    height: 80px;
+    margin: 10px auto 0;
+    cursor: pointer;
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    flex-direction: column-reverse;
+    flex-shrink: 0;
+}
+.volume-progress {
+    .volume-filler {
+        position: relative;
+        margin: 0 auto;
+        width: 5px;
+    }
+
+    .volume-select {
+        background-color: @main-color;
+    }
+
+    .volume-unselect {
+       flex: 1;
+        background-color: #dddddd;
+    }
+    .volume-cursor {
+        position: relative;
+        background-color: @main-color;
+        margin: auto;
+        width: 10px;
+        height: 5px;
+        &:hover {
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+        &:active {
+            background-color: rgba(247, 8, 8, 0.507);
+        }
+    }
+}
+

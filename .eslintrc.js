@@ -29,6 +29,8 @@ module.exports = {
     "rules": {
         "prettier/prettier": "error",
         "react/prop-types":[0],
+        '@typescript-eslint/ban-ts-ignore':[0],
+        "@typescript-eslint/camelcase": [0],
         "@typescript-eslint/no-explicit-any":[0],
         "@typescript-eslint/explicit-function-return-type":[0],
         "@typescript-eslint/no-use-before-define":[0],
