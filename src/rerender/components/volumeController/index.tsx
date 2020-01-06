@@ -24,9 +24,15 @@ const VolumeController: React.FC<Props> = props => {
         const el_grant_parent = document.getElementsByClassName(
             "player-container"
         )[0]! as HTMLDivElement;
+        const el_parent = document.getElementsByClassName(
+            "controller"
+        )[0]! as HTMLDivElement;
         const maxHeight = el2.offsetHeight;
         const offsetTop =
-            el2.offsetTop + el.offsetTop + el_grant_parent.offsetTop;
+            el2.offsetTop +
+            el.offsetTop +
+            el_parent.offsetTop +
+            el_grant_parent.offsetTop;
         const reviseHeight = maxHeight - (e.clientY - offsetTop);
         let reviseProgressValue;
         if (reviseHeight > maxHeight) {

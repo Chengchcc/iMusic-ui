@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { createAction } from "../../util/aciton";
 import store from "../../reducers";
-import VolumeController from "../../components/VolumeController";
+import VolumeController from "../../components/volumeController";
 import PlayList from "../../components/playlist";
 import "./style.less";
 
@@ -56,6 +56,7 @@ const mockSong = {
         "http://p2.music.126.net/CQ81XHWrE9EgHdKs0ysIBQ==/109951164428167647.jpg",
     name: "Yummy",
     artist: "justin Bieber",
+    album: "123",
     duration: 182
 };
 
@@ -70,6 +71,7 @@ const Playerbar = () => {
     // state
     const [showSound, setShowSound] = React.useState(false);
     const [showPlayList, setShowPlayList] = React.useState(false);
+    const [isExtend, setIsExtend] = React.useState(false);
 
     // refs
     const timeLineRef = React.useRef<HTMLDivElement>(null);
@@ -140,6 +142,24 @@ const Playerbar = () => {
         };
     };
 
+    const extendsHandler = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsExtend(true);
+        const el = document.getElementsByClassName(
+            "player-container"
+        )[0]! as HTMLDivElement;
+        el.setAttribute("class", "player-container extend");
+    };
+
+    const hideHandler = (e: React.MouseEvent) => {
+        e.preventDefault();
+        const el = document.getElementsByClassName(
+            "player-container extend"
+        )[0]! as HTMLDivElement;
+        el.setAttribute("class", "player-container");
+        setIsExtend(false);
+    };
+
     // effects
     React.useEffect(() => {
         progressBarRef.current?.addEventListener(
@@ -166,61 +186,90 @@ const Playerbar = () => {
     // render
     return (
         <div className="player-container">
-            <div className="mediainfo">
-                <div
-                    className="cover"
-                    style={{ backgroundImage: `url(${mockSong.thumb_url})` }}
-                ></div>
-                {
-                    //@ts-ignore
-                    <a className="song" name={mockSong.name}></a>
-                }
-                {
-                    //@ts-ignore
-                    <a className="related" artist={mockSong.artist}></a>
-                }
-            </div>
-            <div className="timeline" ref={timeLineRef}>
-                <div className="time played" ref={timePlayedRef}>
-                    0:00
+            <>
+                <div className="mediainfo" onClick={extendsHandler}>
+                    <div
+                        className={!playing ? "cover" : "cover pause"}
+                        style={{
+                            backgroundImage: `url(${mockSong.thumb_url}) no-repeat`
+                        }}
+                    ></div>
+                    {!isExtend ? (
+                        <>
+                            <a className="song">{mockSong.name}</a>
+                            <a className="artist">{mockSong.artist}</a>
+                        </>
+                    ) : (
+                        <>
+                            <div className="song">
+                                <i>单曲:</i>{" "}
+                                <a href="" className="link">
+                                    {mockSong.name}
+                                </a>
+                            </div>
+                            <div className="artist">
+                                <i>歌手: </i>{" "}
+                                <a href="" className="link">
+                                    {mockSong.artist}
+                                </a>
+                            </div>
+                            <div className="album">
+                                <i>专辑: </i>{" "}
+                                <a href="" className="link">
+                                    {mockSong.album}
+                                </a>
+                            </div>
+                        </>
+                    )}
                 </div>
-                <div className="progressbar" ref={progressBarRef}>
-                    <div className="filler played" ref={playedRef} />
-                    <div className="cursor" ref={cursorRef} />
-                    <div className="filler unplayed" />
+                <div className="timeline" ref={timeLineRef}>
+                    <div className="time played" ref={timePlayedRef}>
+                        0:00
+                    </div>
+                    <div className="progressbar" ref={progressBarRef}>
+                        <div className="filler played" ref={playedRef} />
+                        <div className="cursor" ref={cursorRef} />
+                        <div className="filler unplayed" />
+                    </div>
+                    <div className="time total">{readableSecond(duration)}</div>
                 </div>
-                <div className="time total">{readableSecond(duration)}</div>
-            </div>
-            <div className="controller">
-                {showSound ? (
-                    <VolumeController hide={() => setShowSound(false)} />
-                ) : null}
-                <button
-                    className="sound"
-                    title="sound"
-                    onClick={() => setShowSound(true)}
-                />
-                <button className="previous" title="previous" />
-                <button
-                    className={playing ? "pause" : "play"}
-                    onClick={() => playSong(!playing)}
-                    title={playing ? "pause" : "play"}
-                />
-                <button className="next" title="next" />
-                <button
-                    className={`${getMode(mode)}`}
-                    onClick={() => swithMode(mode)}
-                    title={`${getMode(mode)}`}
-                />
-                <button
-                    className="list"
-                    title="list"
-                    onClick={() => setShowPlayList(true)}
-                />
-                {showPlayList ? (
-                    <PlayList hide={() => setShowPlayList(false)} />
-                ) : null}
-            </div>
+                <div className="song-controller">
+                    <button className="previous" title="previous" />
+                    <button
+                        className={playing ? "pause" : "play"}
+                        onClick={() => playSong(!playing)}
+                        title={playing ? "pause" : "play"}
+                    />
+                    <button className="next" title="next" />
+                    <button
+                        className={`${getMode(mode)}`}
+                        onClick={() => swithMode(mode)}
+                        title={`${getMode(mode)}`}
+                    />
+                </div>
+                <div className="controller">
+                    {showSound ? (
+                        <VolumeController hide={() => setShowSound(false)} />
+                    ) : null}
+                    <button
+                        className="sound"
+                        title="sound"
+                        onClick={() => setShowSound(true)}
+                    />
+                    <button className="download" title="download" />
+                    <button
+                        className="list"
+                        title="list"
+                        onClick={() => setShowPlayList(true)}
+                    />
+                    {showPlayList ? (
+                        <PlayList hide={() => setShowPlayList(false)} />
+                    ) : null}
+                </div>
+                <div className="drag">
+                    <button className="fold" onClick={hideHandler} />
+                </div>
+            </>
         </div>
     );
 };

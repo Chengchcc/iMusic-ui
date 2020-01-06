@@ -6,72 +6,70 @@
     right: 0;
     width: 100%;
     height: @player-height;
-	background-color: @main-color ;
-	box-shadow: 0px -5px 10px #c0bfbf;
+    background-color: @main-color ;
+    box-shadow: 0px -5px 10px #c0bfbf;
     z-index: 10;
-    user-select:none;
+    user-select: none;
+    transition: height 0.08s linear;
+
+    .drag {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .mediainfo {
+        bottom: 0;
+        left: 0;
+        height: @player-height;
+        width: 282px;
+        overflow: hidden;
+        cursor: pointer;
+        -webkit-app-region: no-drag;
+
+    }
+
+    .timeline {
+        bottom: 0px;
+        left: 300px;
+        height: @player-height;
+        width: calc(100% - 300px - 350px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .song-controller {
+        bottom: 0px;
+        left: calc(100% - 320px);
+        width: 176px;
+        height: @player-height;
+        display: flex;
+    }
+
+    .controller {
+        bottom: 0px;
+        left: calc(100% - 132px);
+        height: @player-height;
+        width: 124px;
+        display: flex;
+    }
+}
+
+.timeline,
+.song-controller,
+.controller {
+    position: absolute;
+    transition: all 0.36s cubic-bezier(0.37, -0.11, 0.14, 0.85);
 }
 
 .mediainfo {
-    bottom: 0;
-    left: 0;
-    height: @player-height;
-    width: 282px;
-    overflow: hidden;
-    cursor: pointer;
-    -webkit-app-region: no-drag;
-    .cover,
-    .related,
-    .song {
-        position: absolute;
-    }
-    .cover {
-        margin: 8px;
-        width: 48px;
-        height: 48px;
-        background-color: rgba(255,255,255,0.1);
-        background-position: center;
-        background-size: cover;
-        left: 0px;
-        bottom: 0px;
-        z-index: 0;
-    }
-    .song,
-    .related {
-        color: #ffffff;
-        left: 64px;
-        max-width: 210px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        z-index: 2;
-    }
-    .song{
-        bottom: 34px;
-        font-size: 15px;
-        &:before {
-            content: attr(name);
-        }
-    }
-    .related {
-        bottom: 12px;
-	    font-size: 14px;
-        opacity: 0.7;
-        &:before {
-            content: attr(artist);
-        }
-    }
+    position: absolute;
+    transition: all 0.36s linear;
 }
 
-.timeline{
-    bottom: 0px;
-    left: 300px;
-    height: @player-height;
-    width: calc(100% - 300px - 350px);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
 
+
+.timeline {
     .time {
         font-size: 11px;
         color: #ffffff;
@@ -81,7 +79,7 @@
         cursor: default;
     }
 
-    .progressbar{
+    .progressbar {
         -webkit-app-region: no-drag;
         margin: 15px 12px 17px 12px;
         /*15+17 for vertical center*/
@@ -129,25 +127,159 @@
             }
         }
     }
-
 }
 
+.mediainfo {
+
+    .cover,
+    .artist,
+    .album,
+    .song {
+        position: absolute;
+    }
+
+    .cover {
+        margin: 8px;
+        width: 48px;
+        height: 48px;
+        background-color: rgba(255, 255, 255, 0.1);
+        background-position: center;
+        background-size: cover;
+        left: 0px;
+        bottom: 0px;
+        z-index: 0;
+    }
+
+    .song,
+    .artist,
+    .album {
+        color: #ffffff;
+        left: 64px;
+        max-width: 210px;
+        white-space: nowrap;
+        overflow: hidden;
+        z-index: 2;
+    }
+
+    .song {
+        bottom: 34px;
+        font-size: 15px;
+    }
+    .album,
+    .artist {
+        bottom: 12px;
+        font-size: 14px;
+        opacity: 0.7;
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        color: rgba(255, 255, 255, 0.9);
+    }
+}
 
 .controller {
-    bottom: 0px;
-    left: calc(100% - 322px);
-    height: @player-height;
-    width: 300px;
-    display: flex;
+    >div.volume-controller {
+        position: absolute;
+        bottom: calc(@player-height - 4px);
+    }
+
+    >div.playBar-playList {
+        position: absolute;
+        bottom: calc(@player-height - 4px);
+        right: 4px;
+    }
+
+    >button:first-of-type {
+        margin-left: 0px;
+    }
+
+    button:last-of-type {
+        margin-right: 0px;
+    }
 }
 
-.mediainfo,
-.timeline,
-.controller {
-    position: absolute;
+
+.extend {
+    width: 100%;
+    height: 100%;
+    transition: height 0.08s linear;
+
+    .drag {
+        opacity: 1;
+        visibility: visible;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        -webkit-app-region: drag;
+    }
+    .mediainfo {
+        top: 130px;
+        left: 24px;
+        height: 140px;
+        width: calc(100% - 48px);
+        cursor: default;
+        &:hover {
+            background-color: unset;
+        }
+        .song {
+            bottom: 100px;
+            left: 150px;
+        }
+        .artist {
+            bottom: 70px;
+            left: 150px;
+        }
+        .album {
+            left: 150px;
+            bottom: 40px;
+        }
+        .cover {
+            height: 90px;
+            width: 90px;
+            border-radius: 50%;
+            animation:rotator 10s linear infinite;
+            animation-play-state:running;
+            border: 20px solid black;
+            z-index: 999;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+        }
+        .pause {
+            animation-play-state:paused;
+        }
+    }
+    .timeline {
+        bottom: 72px;
+        left: 24px;
+        width: calc(100% - 48px);
+    }
+    .song-controller {
+        bottom: 24px;
+	    left: 10px;
+    }
+    .controller {
+        bottom: 24px;
+    }
+
+    @keyframes rotator {
+        from{transform:rotate(0deg);}
+        to{transform:rotate(360deg);}
+    }
 }
 
-.controller>button {
+a.link {
+    color: #0c73c2;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 10px;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
+
+button {
     font-family: "groove style";
     width: 36px;
     height: 36px;
@@ -166,21 +298,4 @@
         color: rgba(255, 255, 255, 1);
         background-color: rgba(0, 0, 0, 0.2);
     }
-}
-.controller> div.volume-controller {
-	position: absolute;
-    bottom: calc(@player-height - 4px);
-}
-.controller> div.playBar-playList{
-	position: absolute;
-    bottom: calc(@player-height - 4px);
-    right: 4px;
-}
-
-
-.controller>button:first-of-type{
-    margin-left: 0px;
-}
-.controller>button:last-of-type{
-    margin-right: 0px;
 }
