@@ -160,6 +160,9 @@
         overflow: hidden;
         z-index: 2;
     }
+    .album {
+        visibility: hidden;
+    }
 
     .song {
         bottom: 34px;
@@ -218,7 +221,7 @@
         top: 130px;
         left: 24px;
         height: 140px;
-        width: calc(100% - 48px);
+        width: 400px;
         cursor: default;
         &:hover {
             background-color: unset;
@@ -232,6 +235,7 @@
             left: 150px;
         }
         .album {
+            visibility: visible;
             left: 150px;
             bottom: 40px;
         }

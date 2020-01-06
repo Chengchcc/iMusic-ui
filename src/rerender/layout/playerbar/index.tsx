@@ -60,6 +60,44 @@ const mockSong = {
     duration: 182
 };
 
+// handlers
+const extendsHandler = (cb?: () => any) => (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (typeof cb === "function") cb();
+    const el = document.getElementsByClassName(
+        "player-container"
+    )[0]! as HTMLDivElement;
+    el.setAttribute("class", "player-container extend");
+};
+
+const hideHandler = (cb?: (...arg: any[]) => any) => (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (typeof cb === "function") cb();
+    const els = document.getElementsByClassName("player-container extend");
+    if (els.length === 0) return;
+    const el = els[0] as HTMLDivElement;
+    el.setAttribute("class", "player-container");
+};
+
+const toSong = (..._args: any[]) => (e: React.MouseEvent) => {
+    // TODO
+    hideHandler()(e);
+    console.log("toSong");
+};
+
+const toArtist = (..._args: any[]) => (e: React.MouseEvent) => {
+    // TODO
+    hideHandler()(e);
+    console.log("toArtist");
+};
+
+const toAlbum = (..._args: any[]) => (e: React.MouseEvent) => {
+    // TODO
+    hideHandler()(e);
+    console.log("toAlbum");
+};
+
+// views
 const Playerbar = () => {
     // selectors
     const mode = useSelector((state: any) => state.get("playlist").get("mode"));
@@ -71,7 +109,6 @@ const Playerbar = () => {
     // state
     const [showSound, setShowSound] = React.useState(false);
     const [showPlayList, setShowPlayList] = React.useState(false);
-    const [isExtend, setIsExtend] = React.useState(false);
 
     // refs
     const timeLineRef = React.useRef<HTMLDivElement>(null);
@@ -142,24 +179,6 @@ const Playerbar = () => {
         };
     };
 
-    const extendsHandler = (e: React.MouseEvent) => {
-        e.preventDefault();
-        setIsExtend(true);
-        const el = document.getElementsByClassName(
-            "player-container"
-        )[0]! as HTMLDivElement;
-        el.setAttribute("class", "player-container extend");
-    };
-
-    const hideHandler = (e: React.MouseEvent) => {
-        e.preventDefault();
-        const el = document.getElementsByClassName(
-            "player-container extend"
-        )[0]! as HTMLDivElement;
-        el.setAttribute("class", "player-container");
-        setIsExtend(false);
-    };
-
     // effects
     React.useEffect(() => {
         progressBarRef.current?.addEventListener(
@@ -187,40 +206,31 @@ const Playerbar = () => {
     return (
         <div className="player-container">
             <>
-                <div className="mediainfo" onClick={extendsHandler}>
+                <div className="mediainfo" onClick={extendsHandler()}>
                     <div
                         className={!playing ? "cover" : "cover pause"}
                         style={{
                             backgroundImage: `url(${mockSong.thumb_url}) no-repeat`
                         }}
                     ></div>
-                    {!isExtend ? (
-                        <>
-                            <a className="song">{mockSong.name}</a>
-                            <a className="artist">{mockSong.artist}</a>
-                        </>
-                    ) : (
-                        <>
-                            <div className="song">
-                                <i>单曲:</i>{" "}
-                                <a href="" className="link">
-                                    {mockSong.name}
-                                </a>
-                            </div>
-                            <div className="artist">
-                                <i>歌手: </i>{" "}
-                                <a href="" className="link">
-                                    {mockSong.artist}
-                                </a>
-                            </div>
-                            <div className="album">
-                                <i>专辑: </i>{" "}
-                                <a href="" className="link">
-                                    {mockSong.album}
-                                </a>
-                            </div>
-                        </>
-                    )}
+                    <div className="song">
+                        <i>单曲:</i>{" "}
+                        <a className="link" onClick={toSong()}>
+                            {mockSong.name}
+                        </a>
+                    </div>
+                    <div className="artist">
+                        <i>歌手: </i>{" "}
+                        <a className="link" onClick={toArtist()}>
+                            {mockSong.artist}
+                        </a>
+                    </div>
+                    <div className="album">
+                        <i>专辑: </i>{" "}
+                        <a className="link" onClick={toAlbum()}>
+                            {mockSong.album}
+                        </a>
+                    </div>
                 </div>
                 <div className="timeline" ref={timeLineRef}>
                     <div className="time played" ref={timePlayedRef}>
@@ -267,7 +277,7 @@ const Playerbar = () => {
                     ) : null}
                 </div>
                 <div className="drag">
-                    <button className="fold" onClick={hideHandler} />
+                    <button className="fold" onClick={hideHandler()} />
                 </div>
             </>
         </div>
