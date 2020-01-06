@@ -27,6 +27,7 @@ const Sidebar = () => {
         <div id="sidebar-container" className="sidebar-container ">
             <div className="sidebar">
                 <button className="search" />
+                <button className="home" />
                 <button className="user" />
                 <button className="favorite" />
                 <button className="setting" />
