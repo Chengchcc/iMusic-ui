@@ -1,6 +1,6 @@
 import React from "react";
+import useClickRest from "../../../../components/useClickRest";
 import "./style.less";
-import useClickRest from "../useClickRest";
 interface Props {
     hide: () => any;
 }

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
+import useClickRest from "../../../../components/useClickRest";
 import "./style.less";
-import useClickRest from "../useClickRest";
 interface Props {
     className?: string;
     hide: () => any;

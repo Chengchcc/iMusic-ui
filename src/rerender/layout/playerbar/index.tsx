@@ -3,8 +3,8 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { createAction } from "../../util/aciton";
 import store from "../../reducers";
-import VolumeController from "../../components/volumeController";
-import PlayList from "../../components/playlist";
+import VolumeController from "./component/volumeController";
+import PlayList from "./component/playlist";
 import "./style.less";
 
 const getMode = (id: number) => {
