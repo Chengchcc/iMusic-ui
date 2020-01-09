@@ -16,7 +16,7 @@ const defaultState = fromJS({
     currentIndex: 0,
     currentSong: {
         src:
-            "http://m7.music.126.net/20200109164547/a74d3417f6746a42fdfc83793305fbb7/ymusic/040e/5153/5208/3dcd1fcd83f9904b7ca6ebbfedf25037.mp3",
+            "http://m8.music.126.net/20200109195345/0b39da1895a442d818990f43be40694a/ymusic/040e/5153/5208/3dcd1fcd83f9904b7ca6ebbfedf25037.mp3",
         artist: { name: "韩甜甜", id: 32621386 },
         album: { name: "画", id: 82882725 },
         name: "画",

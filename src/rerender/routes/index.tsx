@@ -11,7 +11,7 @@ const BasicRoute = () => (
     <HashRouter>
         <Switch>
             <Layout>
-                <Redirect from="/" to="/home" />
+                <Redirect from="/" to="/search" />
                 <Route exact path="/home" component={Home} />
                 <Route exact path="/search" component={Search} />
                 <Route exact path="/song:id" component={Song} />
