@@ -4,7 +4,6 @@ const { remote } = window.require("electron");
 const KEY_ALT = 18;
 
 const currentWindow = remote.getCurrentWindow();
-console.log("remote=>", currentWindow);
 const isWindows = window.clientInformation.platform === "Win32";
 
 const Titlebar: React.FC<{ title: string }> = (props: any) => {

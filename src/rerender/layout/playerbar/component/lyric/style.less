@@ -1,0 +1,58 @@
+@color-mint: #48cfad;
+
+.lc-container {
+    width: 60vw;
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica', Roboto, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    .lc-lyrics{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-weight: lighter;
+        font-size: 16px;
+        line-height: 24px;
+        word-spacing: 1px;
+        &:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            display: block;
+            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            background: rgba(0; 0; 0; 0.1);
+        }
+        section {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            overflow: hidden;
+            overflow-y: auto;
+           
+        }
+
+        .lc {
+            position: relative;
+            padding: 10px 0;
+            color: #fff;
+            & [playing] span {
+                display: inline-block;
+                padding-bottom: 4;
+                font-size: 24;
+                color: @color-mint;
+                border-bottom: thin solid @color-mint;
+            }
+            
+        }
+    }
+
+    .placeholder {
+        padding-top: 20vh;
+        font-size: 32;
+        letter-spacing: 1;
+        word-spacing: 3;
+        text-align: center;
+        color: '#fff',
+    }
+}

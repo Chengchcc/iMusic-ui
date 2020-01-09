@@ -43,7 +43,7 @@ const parse = (data: any) => {
             result[times.toString()] = content;
         });
     }
-    return {};
+    return result;
 };
 
 export default getLyricById;

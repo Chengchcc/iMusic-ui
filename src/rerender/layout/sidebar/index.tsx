@@ -1,33 +1,23 @@
 import React from "react";
 import "./style.less";
+import { useHistory } from "react-router-dom";
 
 const Sidebar = () => {
-    const [isShow, setIsShow] = React.useState(false);
+    const history = useHistory();
 
-    // React.useEffect(() => {
-    //     const element = document.getElementById("sidebar-container");
-    //     element?.addEventListener("mouseenter", showSidebar);
-    //     element?.addEventListener("mouseleave", hideSideBar);
-    //     return () => {
-    //         element?.removeEventListener("mouseenter", showSidebar);
-    //         element?.removeEventListener("mouseleave", hideSideBar);
-    //     };
-    // });
+    const toHistory = React.useCallback(() => {
+        history.push("search");
+    }, []);
 
-    // const showSidebar = () => {
-    //     console.log("show");
-    //     setIsShow(true);
-    // };
-    // const hideSideBar = () => {
-    //     console.log("hide");
-    //     setIsShow(false);
-    // };
+    const toHome = React.useCallback(() => {
+        history.push("home");
+    }, []);
 
     return (
         <div id="sidebar-container" className="sidebar-container ">
             <div className="sidebar">
-                <button className="home" />
-                <button className="search" />
+                <button className="home" onClick={toHome} />
+                <button className="search" onClick={toHistory} />
                 <button className="user" />
                 <button className="favorite" />
                 <button className="setting" />

@@ -8,11 +8,16 @@
     height: @player-height;
     background-color: @main-color ;
     box-shadow: 0px -5px 10px #c0bfbf;
-    z-index: 10;
+    z-index: 100;
     user-select: none;
     transition: height 0.08s linear;
 
     .drag {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .lyric{
         opacity: 0;
         visibility: hidden;
     }
@@ -40,21 +45,22 @@
 
     .song-controller {
         bottom: 0px;
-        left: calc(100% - 320px);
-        width: 176px;
+        left: calc(100% - 290px);
+        width: 200px;
         height: @player-height;
         display: flex;
     }
 
     .controller {
         bottom: 0px;
-        left: calc(100% - 132px);
+        left: calc(100% - 90px);
         height: @player-height;
-        width: 124px;
+        width: 80px;
         display: flex;
     }
 }
 
+.lyric,
 .timeline,
 .song-controller,
 .controller {
@@ -181,24 +187,18 @@
     }
 }
 
-.controller {
+.song-controller {
     >div.volume-controller {
-        position: absolute;
-        bottom: calc(@player-height - 4px);
-    }
-
-    >div.playBar-playList {
         position: absolute;
         bottom: calc(@player-height - 4px);
         right: 4px;
     }
-
-    >button:first-of-type {
-        margin-left: 0px;
-    }
-
-    button:last-of-type {
-        margin-right: 0px;
+}
+.controller {
+    >div.playBar-playList {
+        position: absolute;
+        bottom: calc(@player-height - 4px);
+        right: 4px;
     }
 }
 
@@ -216,6 +216,15 @@
         width: 100%;
         height: 40px;
         -webkit-app-region: drag;
+    }
+
+    .lyric {
+        opacity: 1;
+        visibility: visible;
+        position: absolute;
+        top: 50px;
+        right: 20px;
+        bottom: 120px;
     }
     .mediainfo {
         top: 130px;

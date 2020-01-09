@@ -6,7 +6,7 @@ const defaultState = fromJS({
 
 export default (state = defaultState, action: any) => {
     if (action.type === "lyric/update") {
-        return state.set("lyric", action.payload.lyric);
+        return state.set("lyric", fromJS(action.payload.lyric));
     }
     return state;
 };

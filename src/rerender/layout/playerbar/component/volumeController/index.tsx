@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
 import useClickRest from "../../../../components/useClickRest";
+import { audio } from "../../../audioplayer";
 import "./style.less";
 interface Props {
     className?: string;
@@ -25,7 +25,7 @@ const VolumeController: React.FC<Props> = props => {
             "player-container"
         )[0]! as HTMLDivElement;
         const el_parent = document.getElementsByClassName(
-            "controller"
+            "song-controller"
         )[0]! as HTMLDivElement;
         const maxHeight = el2.offsetHeight;
         const offsetTop =
@@ -34,7 +34,7 @@ const VolumeController: React.FC<Props> = props => {
             el_parent.offsetTop +
             el_grant_parent.offsetTop;
         const reviseHeight = maxHeight - (e.clientY - offsetTop);
-        let reviseProgressValue;
+        let reviseProgressValue: number;
         if (reviseHeight > maxHeight) {
             reviseProgressValue = 1;
         } else if (reviseHeight < 0) {
@@ -69,6 +69,7 @@ const VolumeController: React.FC<Props> = props => {
         };
         document.onmouseup = () => {
             // update player
+            audio.volume = reviseProgressValue;
             document.onmousemove = null;
             document.onmouseup = null;
         };
@@ -76,6 +77,12 @@ const VolumeController: React.FC<Props> = props => {
 
     // effects
     React.useEffect(() => {
+        const el2 = progressRef.current!;
+        const maxHeight = el2.offsetHeight;
+        selectRef.current!.setAttribute(
+            "style",
+            "height:calc(" + audio.volume + " * " + maxHeight + "px )"
+        );
         progressRef.current?.addEventListener(
             "mousedown",
             progressMousedownHandler

@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 import { createAction } from "../../util/aciton";
 import store from "../../reducers";
 import VolumeController from "./component/volumeController";
+import LyricComponent from "./component/lyric";
 import PlayList from "./component/playlist";
+import { useHistory } from "react-router-dom";
+import { audio } from "../audioplayer";
+
 import "./style.less";
 
 const getMode = (id: number) => {
@@ -36,10 +40,11 @@ const playSong = (flag: boolean) => {
     );
 };
 
-const readableSecond = (secondValue: number) => {
-    if (isNaN(secondValue)) {
+const readableSecond = (milsecondValue: number) => {
+    if (isNaN(milsecondValue)) {
         return "0:00";
     }
+    const secondValue = milsecondValue / 1000;
     const hours = Math.floor(secondValue / 60 / 60);
     const minutes = Math.floor(secondValue / 60) % 60;
     const seconds = Math.floor(secondValue - hours * 60 * 60 - minutes * 60);
@@ -49,15 +54,6 @@ const readableSecond = (secondValue: number) => {
         return hours.toString() + ":" + minutes.toString() + ":" + secondss;
     }
     return minutes.toString() + ":" + secondss;
-};
-
-const mockSong = {
-    thumb_url:
-        "http://p2.music.126.net/CQ81XHWrE9EgHdKs0ysIBQ==/109951164428167647.jpg",
-    name: "Yummy",
-    artist: "justin Bieber",
-    album: "123",
-    duration: 182
 };
 
 // handlers
@@ -79,33 +75,23 @@ const hideHandler = (cb?: (...arg: any[]) => any) => (e: React.MouseEvent) => {
     el.setAttribute("class", "player-container");
 };
 
-const toSong = (..._args: any[]) => (e: React.MouseEvent) => {
-    // TODO
-    hideHandler()(e);
-    console.log("toSong");
-};
-
-const toArtist = (..._args: any[]) => (e: React.MouseEvent) => {
-    // TODO
-    hideHandler()(e);
-    console.log("toArtist");
-};
-
-const toAlbum = (..._args: any[]) => (e: React.MouseEvent) => {
-    // TODO
-    hideHandler()(e);
-    console.log("toAlbum");
-};
-
 // views
 const Playerbar = () => {
+    // history
+    const history = useHistory();
+
     // selectors
     const mode = useSelector((state: any) => state.get("playlist").get("mode"));
     const playing = useSelector((state: any) =>
         state.get("playlist").get("playing")
     );
-    // TODO remove
-    const { duration } = mockSong;
+
+    const curentSong = useSelector((state: any) =>
+        state.get("playlist").get("currentSong")
+    );
+
+    const { duration, name, artist, album, img1v1Url, id } = curentSong.toJS();
+
     // state
     const [showSound, setShowSound] = React.useState(false);
     const [showPlayList, setShowPlayList] = React.useState(false);
@@ -127,7 +113,7 @@ const Playerbar = () => {
             timeLineRef.current!.offsetLeft;
         let reviseWidth =
             e.clientX - offsetLeft - cursorRef.current!.offsetWidth / 2;
-        let reviseProgressValue;
+        let reviseProgressValue: number;
         if (reviseWidth > maxWidth) {
             reviseProgressValue = 1;
         } else if (reviseWidth < 0) {
@@ -135,19 +121,6 @@ const Playerbar = () => {
         } else {
             reviseProgressValue = reviseWidth / maxWidth;
         }
-
-        timePlayedRef.current!.innerText = readableSecond(
-            duration * reviseProgressValue
-        );
-
-        playedRef.current!.setAttribute(
-            "style",
-            "width:calc(" +
-                reviseProgressValue +
-                " * (100% - " +
-                cursorRef.current!.offsetWidth +
-                "px))"
-        );
 
         document.onmousemove = e1 => {
             reviseWidth =
@@ -159,28 +132,76 @@ const Playerbar = () => {
             } else {
                 reviseProgressValue = reviseWidth / maxWidth;
             }
-            timePlayedRef.current!.innerText = readableSecond(
-                duration * reviseProgressValue
-            );
-            playedRef.current!.setAttribute(
-                "style",
-                "width:calc(" +
-                    reviseProgressValue +
-                    " * (100% - " +
-                    cursorRef.current!.offsetWidth +
-                    "px))"
-            );
+            handleProgress(reviseProgressValue);
         };
 
         document.onmouseup = () => {
             // update player
+            setProgress(reviseProgressValue);
             document.onmousemove = null;
             document.onmouseup = null;
         };
     };
 
+    const handleProgress = (reviseProgressValue: number) => {
+        timePlayedRef.current!.innerText = readableSecond(
+            duration * reviseProgressValue
+        );
+        playedRef.current!.setAttribute(
+            "style",
+            "width:calc(" +
+                reviseProgressValue +
+                " * (100% - " +
+                cursorRef.current!.offsetWidth +
+                "px))"
+        );
+    };
+
+    const setProgress = (progressValue: number) => {
+        const expectTime = audio.duration * progressValue;
+        if (audio.seekable.length != 0) {
+            for (let x = 0; x < audio.seekable.length; x++) {
+                if (
+                    expectTime >= audio.seekable.start(x) &&
+                    expectTime <= audio.seekable.end(x)
+                ) {
+                    audio.currentTime = expectTime;
+                    return;
+                }
+            }
+            audio.currentTime = audio.buffered.end(audio.buffered.length - 1);
+        }
+    };
+
+    const toSong = React.useCallback(
+        (id: number) => (e: React.MouseEvent) => {
+            hideHandler()(e);
+            history.push(`/song:${id}`);
+        },
+        []
+    );
+
+    const toArtist = React.useCallback(
+        (id: number) => (e: React.MouseEvent) => {
+            hideHandler()(e);
+            history.push(`/artist:${id}`);
+        },
+        []
+    );
+
+    const toAlbum = React.useCallback(
+        (id: number) => (e: React.MouseEvent) => {
+            hideHandler()(e);
+            history.push(`/album:${id}`);
+        },
+        []
+    );
     // effects
     React.useEffect(() => {
+        const handler = () => {
+            handleProgress((audio.currentTime * 1000) / duration);
+        };
+        audio.addEventListener("timeupdate", handler);
         progressBarRef.current?.addEventListener(
             "mousedown",
             progressMousedownHandler
@@ -190,17 +211,9 @@ const Playerbar = () => {
                 "mousedown",
                 progressMousedownHandler
             );
+            audio.removeEventListener("timeupdate", handler);
         };
     });
-
-    React.useEffect(() => {
-        (document.getElementsByClassName(
-            "cover"
-        )[0] as HTMLDivElement).setAttribute(
-            "style",
-            `background-image: url(${mockSong.thumb_url})`
-        );
-    }, [mockSong]);
 
     // render
     return (
@@ -208,27 +221,27 @@ const Playerbar = () => {
             <>
                 <div className="mediainfo" onClick={extendsHandler()}>
                     <div
-                        className={!playing ? "cover" : "cover pause"}
+                        className={playing ? "cover" : "cover pause"}
                         style={{
-                            backgroundImage: `url(${mockSong.thumb_url}) no-repeat`
+                            backgroundImage: `url(${img1v1Url})`
                         }}
                     ></div>
                     <div className="song">
                         <i>单曲:</i>{" "}
-                        <a className="link" onClick={toSong()}>
-                            {mockSong.name}
+                        <a className="link" onClick={toSong(id)}>
+                            {name}
                         </a>
                     </div>
                     <div className="artist">
                         <i>歌手: </i>{" "}
-                        <a className="link" onClick={toArtist()}>
-                            {mockSong.artist}
+                        <a className="link" onClick={toArtist(artist.id)}>
+                            {artist.name}
                         </a>
                     </div>
                     <div className="album">
                         <i>专辑: </i>{" "}
-                        <a className="link" onClick={toAlbum()}>
-                            {mockSong.album}
+                        <a className="link" onClick={toAlbum(album.id)}>
+                            {album.name}
                         </a>
                     </div>
                 </div>
@@ -256,16 +269,16 @@ const Playerbar = () => {
                         onClick={() => swithMode(mode)}
                         title={`${getMode(mode)}`}
                     />
-                </div>
-                <div className="controller">
-                    {showSound ? (
-                        <VolumeController hide={() => setShowSound(false)} />
-                    ) : null}
                     <button
                         className="sound"
                         title="sound"
                         onClick={() => setShowSound(true)}
                     />
+                    {showSound ? (
+                        <VolumeController hide={() => setShowSound(false)} />
+                    ) : null}
+                </div>
+                <div className="controller">
                     <button className="download" title="download" />
                     <button
                         className="list"
@@ -279,6 +292,7 @@ const Playerbar = () => {
                 <div className="drag">
                     <button className="fold" onClick={hideHandler()} />
                 </div>
+                <LyricComponent songId={id} className="lyric" />
             </>
         </div>
     );

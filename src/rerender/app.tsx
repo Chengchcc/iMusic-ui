@@ -1,14 +1,11 @@
 import * as React from "react";
-import Home from "./home";
-import Layout from "../layout";
 import { Provider } from "react-redux";
-import store from "../reducers";
+import store from "./reducers";
+import BasicRoute from "./routes";
 const App = () => {
     return (
         <Provider store={store}>
-            <Layout>
-                <Home />
-            </Layout>
+            <BasicRoute />
         </Provider>
     );
 };

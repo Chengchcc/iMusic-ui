@@ -12,7 +12,6 @@
     unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
   }
 
-
 html {
     margin: 0 0;
     padding: 0 0;
@@ -99,4 +98,31 @@ button.favorite::after{
 
 button.home::after {
     content: "\e80f";
+}
+
+::-webkit-scrollbar {/*滚动条整体样式*/
+
+    width: 10px;     /*高宽分别对应横竖滚动条的尺寸*/
+    height: 1px;
+
+}
+
+::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+
+    border-radius: 10px;
+
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+
+    background: lighten(red, 10);
+
+}
+
+::-webkit-scrollbar-track {/*滚动条里面轨道*/
+
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+
+    border-radius: 10px;
+
+    background: #EDEDED;
+
 }
