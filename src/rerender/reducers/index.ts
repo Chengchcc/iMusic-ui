@@ -4,10 +4,12 @@ import thunk from "redux-thunk";
 
 import playListReducer from "./playlist";
 import lyricReducer from "./lyric";
+import searchReducer from "./search";
 
 const reducer = combineReducers({
     playlist: playListReducer,
-    lyric: lyricReducer
+    lyric: lyricReducer,
+    search: searchReducer
 });
 
 const composeEnhancers = compose;

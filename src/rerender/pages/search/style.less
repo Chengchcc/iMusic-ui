@@ -1,35 +1,87 @@
 @import '../../theme.less';
+@border-width: 0.5px;
 .search-bar {
     position: absolute;
-    top: 15vh;
+    top: 100px;
     left: calc(50% - 200px);
     width: 400px;
     height: 50px;
+
     input.sg {
-        border: unset;
+        border: 2px solid @color-border;
+        border-right: unset;
         height: 40px;
         width: 350px;
         cursor: text;
         padding: 0 20px;
         box-sizing: border-box;
         border-radius: 5px 0 0 5px;
-        :hover {
-            border: ;
-        }
+        vertical-align: top;
     }
 
     button.search {
-        margin-top: 5px;
         width: 40px;
         height: 40px;
-        display: block;
-        float: right;
+        display: inline-block;
         background-color: @main-color ;
         border-radius: 0 5px 5px 0;
-        border: 2px solid gray;
+        border: 2px solid @color-border;
+        vertical-align: top;
     }
-   
+
 }
+
+ul.search-tabs {
+    position: absolute;
+    top: 150px;
+    left: calc(50% - 290px);
+    background-color: #F7F7F7;
+    li {
+        list-style: none;
+        display: inline-block;
+        border-top: 2px solid @color-border;
+        border-bottom:@border-width solid @color-border;
+        box-sizing: border-box;
+        a {
+            display: inline-block;
+            font-family: Arial, Helvetica, sans-serif;
+            width: 108px;
+            height: 39px;
+            text-align: center;
+            line-height: 39px;
+        }
+        &:hover{
+            border-top: 2px solid red;
+            cursor: pointer;
+        }
+    }
+    li.active {
+        border-bottom: unset;
+        border-top: 2px solid red;
+        border-left:@border-width solid @color-border;
+        border-right:@border-width solid @color-border;
+    } 
+    li:first-of-type {
+        border-left:@border-width solid @color-border;
+    }
+    li:last-of-type {
+        border-right:@border-width solid @color-border;
+    }
+    
+}
+
+.panel {
+    position: absolute;
+    top: 210px;
+    left: calc(50% - 400px);
+    width: 800px;
+    height:calc(100% - 210px - @player-height);
+}
+
+.hide {
+    visibility: hidden;
+}
+
 
 button {
     font-family: "groove style";

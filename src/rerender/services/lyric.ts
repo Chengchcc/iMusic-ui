@@ -8,17 +8,18 @@ const getLyricById = async (id: number) => {
         return parse(data);
     } catch (err) {
         console.log("get lyric error=>", err);
-        return {};
+        return { 0: "暂无歌词" };
     }
 };
 
 const parse = (data: any) => {
     const result: { [times: string]: string } = {};
+    const defaultRes = { 0: "暂无歌词" };
     if (data.code !== 200) {
         throw data;
     } else {
         if (data.lrc === undefined) {
-            return result;
+            return defaultRes;
         }
 
         const lyrics = data.lrc.lyric.split("\n");
@@ -27,7 +28,7 @@ const parse = (data: any) => {
             const match = e.match(/\[.+\]/);
 
             if (!match) {
-                return result;
+                return defaultRes;
             }
 
             const timestamp = match[0]
