@@ -6,7 +6,7 @@ const Sidebar = () => {
     const history = useHistory();
 
     const toSearch = React.useCallback(() => {
-        history.push("search?type=1&keywords=123");
+        history.push("search");
     }, []);
 
     const toHome = React.useCallback(() => {

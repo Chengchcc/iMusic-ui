@@ -18,7 +18,6 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
         className
     } = props;
     const pages = [];
-    console.log("currentPage=>", currentPage);
     let startPage = 1;
     if (currentPage >= groupCount) {
         startPage = currentPage - 2;

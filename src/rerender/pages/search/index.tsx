@@ -17,11 +17,11 @@ const Search: React.FC = () => {
     const params = useQuery();
     // handlers
     const onSearch = (k?: string, type?: number) => {
-        const url = `/search?keywords=${k || keywords}&type=${type ||
-            currentIndex}`;
+        const url = `/search?keywords=${k || keywords}&type=${index2Type(
+            type === undefined ? currentIndex : type
+        )}`;
         history.push(url);
     };
-
     // effects
     React.useEffect(() => {
         const keydownHandler = (e: KeyboardEvent) => {
@@ -52,9 +52,9 @@ const Search: React.FC = () => {
             setKeywords(keywords_);
         }
         if (type) {
-            setActive(parseInt(type));
+            setActive(type2Index(Number(type)));
         }
-    });
+    }, [params]);
 
     return (
         <Main>
@@ -66,6 +66,7 @@ const Search: React.FC = () => {
                 />
             </div>
             <Tabs currentIndex={currentIndex}>
+                {/* tab button */}
                 <ul className="search-tabs">
                     <SearchTab
                         title={"单曲"}
@@ -88,6 +89,7 @@ const Search: React.FC = () => {
                         onClick={i => onSearch(undefined, i)}
                     />
                 </ul>
+                {/* panel list */}
                 <SearchSong keywords={keywords} />
             </Tabs>
         </Main>
@@ -95,3 +97,35 @@ const Search: React.FC = () => {
 };
 
 export default Search;
+
+const index2Type = (idx: number) => {
+    switch (idx) {
+        case 0:
+            return 1;
+        case 1:
+            return 100;
+        case 2:
+            return 10;
+        case 3:
+            return 1000;
+        case 4:
+            return 1009;
+    }
+};
+
+const type2Index = (type: number) => {
+    switch (type) {
+        case 1:
+            return 0;
+        case 100:
+            return 1;
+        case 10:
+            return 2;
+        case 1000:
+            return 3;
+        case 1009:
+            return 4;
+        default:
+            return 4;
+    }
+};
