@@ -1,34 +1,38 @@
 import React from "react";
 import "./style.less";
 
-interface PaginationProps {
-    currentPage: number;
+export interface PaginationProps {
     totalPage: number;
     groupCount?: number;
-    startPage?: number;
     className?: string;
-    prePageClick: () => any;
-    nextPageClick: () => any;
+    currentPage: number;
     onPageClick: (page: number) => any;
 }
 
-const Pagination: React.FC<PaginationProps> = props => {
+const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
     const {
-        currentPage,
         totalPage,
-        prePageClick,
         groupCount = 5,
-        nextPageClick,
-        startPage = 0,
-        onPageClick,
+        onPageClick: goPage,
+        currentPage,
         className
     } = props;
-
     const pages = [];
+    console.log("currentPage=>", currentPage);
+    let startPage = 1;
+    if (currentPage >= groupCount) {
+        startPage = currentPage - 2;
+    }
+
     pages.push(
         <li
-            className={currentPage === 0 ? "nomore" : ""}
-            onClick={prePageClick}
+            className={currentPage === 1 ? "nomore" : ""}
+            onClick={() => {
+                if (currentPage - 1 === 0) {
+                    return false;
+                }
+                goPage(currentPage - 1);
+            }}
             key={0}
         >
             上一页
@@ -36,14 +40,14 @@ const Pagination: React.FC<PaginationProps> = props => {
     );
     if (totalPage <= 10) {
         /*总页码小于等于10时，全部显示出来*/
-        for (let i = 0; i <= totalPage; i++) {
+        for (let i = 1; i <= totalPage; i++) {
             pages.push(
                 <li
-                    key={i + 1}
-                    onClick={() => onPageClick(i)}
+                    key={i}
+                    onClick={() => goPage(i)}
                     className={currentPage === i ? "activePage" : ""}
                 >
-                    {i + 1}
+                    {i}
                 </li>
             );
         }
@@ -53,9 +57,9 @@ const Pagination: React.FC<PaginationProps> = props => {
         //第一页
         pages.push(
             <li
-                className={currentPage === 0 ? "activePage" : ""}
+                className={currentPage === 1 ? "activePage" : ""}
                 key={1}
-                onClick={() => onPageClick(0)}
+                onClick={() => goPage(1)}
             >
                 1
             </li>
@@ -76,12 +80,12 @@ const Pagination: React.FC<PaginationProps> = props => {
         }
         //非第一页和最后一页显示
         for (let i = startPage; i < pageLength; i++) {
-            if (i <= totalPage - 1 && i > 0) {
+            if (i <= totalPage - 1 && i > 1) {
                 pages.push(
                     <li
                         className={currentPage === i ? "activePage" : ""}
-                        key={i + 1}
-                        onClick={() => onPageClick(i)}
+                        key={i}
+                        onClick={() => goPage(i)}
                     >
                         {i}
                     </li>
@@ -101,7 +105,7 @@ const Pagination: React.FC<PaginationProps> = props => {
             <li
                 className={currentPage === totalPage ? "activePage" : ""}
                 key={totalPage}
-                onClick={() => onPageClick(totalPage)}
+                onClick={() => goPage(totalPage)}
             >
                 {totalPage}
             </li>
@@ -111,7 +115,12 @@ const Pagination: React.FC<PaginationProps> = props => {
     pages.push(
         <li
             className={currentPage === totalPage ? "nomore" : ""}
-            onClick={nextPageClick}
+            onClick={() => {
+                if (currentPage + 1 === 0) {
+                    return false;
+                }
+                goPage(currentPage + 1);
+            }}
             key={totalPage + 1}
         >
             下一页

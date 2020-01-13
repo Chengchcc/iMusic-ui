@@ -2,10 +2,15 @@ import React, { cloneElement, isValidElement } from "react";
 import useConstant from "./usconstant";
 import { elementsCtx, tabsStateCtx } from "./context";
 import { useTabState, usePanelState } from "./hooks";
-
-export const Tabs: React.FC = props => {
-    const { children } = props;
+interface TabsProps {
+    currentIndex: number;
+}
+export const Tabs: React.FC<TabsProps> = props => {
+    const { children, currentIndex } = props;
     const [activeIndex, setActive] = React.useState(0);
+    React.useEffect(() => {
+        setActive(currentIndex);
+    }, [currentIndex]);
     const elements = useConstant(() => ({ tabs: 0, panels: 0 }));
 
     return (

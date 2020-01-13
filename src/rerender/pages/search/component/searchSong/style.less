@@ -1,4 +1,84 @@
-.loader-container{
+@import '../../../../theme.less';
+
+.loader-container {
     height: 800px;
     width: 100%;
+}
+
+.song-res {
+    height: calc(100% - 100px);
+    padding: 10px 5px;
+    overflow-y: auto;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    button {
+        display: inline-block;
+        color: #999999;
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+        margin: 0 5px;
+
+        &:hover {
+            color: #666666;
+        }
+    }
+
+    table {
+        width: 100%;
+        tr {
+            color: #333;
+            margin: 0;
+            height: 43px;
+
+            .not-show {
+                visibility: hidden;
+            }
+
+            &:nth-child(2n) {
+                background-color: #F7F7F7;
+            }
+
+            &:hover {
+                .not-show {
+                    visibility: visible;
+                }
+
+                background-color: #F2F2F2;
+                border: 1px solid @color-border;
+            }
+        }
+
+        td {
+            margin: 5px auto;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        td.w0 {
+            width: 370px;
+        }
+
+        td.w1 {
+            margin-left: 10px;
+            width: 15%;
+        }
+
+        td.w2 {
+            width: 18%;
+            color: #666;
+        }
+
+        a {
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
 }

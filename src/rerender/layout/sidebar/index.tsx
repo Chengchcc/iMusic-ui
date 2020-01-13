@@ -5,8 +5,8 @@ import { useHistory } from "react-router-dom";
 const Sidebar = () => {
     const history = useHistory();
 
-    const toHistory = React.useCallback(() => {
-        history.push("search");
+    const toSearch = React.useCallback(() => {
+        history.push("search?type=1&keywords=123");
     }, []);
 
     const toHome = React.useCallback(() => {
@@ -17,7 +17,7 @@ const Sidebar = () => {
         <div id="sidebar-container" className="sidebar-container ">
             <div className="sidebar">
                 <button className="home" onClick={toHome} />
-                <button className="search" onClick={toHistory} />
+                <button className="search" onClick={toSearch} />
                 <button className="user" />
                 <button className="favorite" />
                 <button className="setting" />

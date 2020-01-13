@@ -18,7 +18,8 @@ export const useTabState = () => {
     const state = React.useMemo(
         () => ({
             isActive: activeIndex === tabIndex,
-            onClick
+            onClick,
+            tabIndex
         }),
         [activeIndex, onClick, tabIndex]
     );

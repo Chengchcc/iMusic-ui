@@ -8,17 +8,19 @@ const LIMIT = 20;
 export const search = async (
     keywords: string,
     searchType: string,
-    offset: number,
+    page: number,
     limit = LIMIT
 ) => {
     const type = str2SearchType(searchType);
     try {
-        const url = `${baseApi}/search?keywords=${keywords}&limit=${limit}&offset=${offset}&type=${type}`;
+        const url = `${baseApi}/search?keywords=${keywords}&limit=${limit}&offset=${(page -
+            1) *
+            limit}&type=${type}`;
         const resp = await axios.get(url);
         const { data } = resp;
         store.dispatch(
             createAction(`search/set${searchType}`)(
-                parse(data, searchType, offset)
+                parse(data, searchType, page)
             )
         );
     } catch (err) {
@@ -123,7 +125,7 @@ const parse = (data: any, type: string, page: number) => {
     const result = {
         [`${type}`]: list,
         [`${type}CurrentPage`]: page,
-        [`${type}TotalPage`]: total
+        [`${type}TotalPage`]: Math.floor(total)
     };
     return result;
 };

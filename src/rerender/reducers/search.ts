@@ -62,5 +62,8 @@ export default (state = defaultState, action: any) => {
             .set("playlistsCurrentPage", action.payload.playlistsCurrentPage)
             .set("playlistsTotalPage", action.payload.playlistsTotalPage);
     }
+    if (action.type === "search/clear") {
+        return defaultState;
+    }
     return state;
 };

@@ -13,7 +13,7 @@ const BasicRoute = () => (
             <Layout>
                 <Redirect from="/" to="/search" />
                 <Route exact path="/home" component={Home} />
-                <Route exact path="/search" component={Search} />
+                <Route path="/search" component={Search} />
                 <Route exact path="/song:id" component={Song} />
                 <Route exact path="/artist:id" component={Artist} />
                 <Route exact path="/album:id" component={Album} />

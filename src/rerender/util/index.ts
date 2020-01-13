@@ -21,3 +21,19 @@ export const shuffle = <T>(array: Array<T>) => {
 
     return array;
 };
+
+export const readableSecond = (milsecondValue: number) => {
+    if (isNaN(milsecondValue)) {
+        return "0:00";
+    }
+    const secondValue = milsecondValue / 1000;
+    const hours = Math.floor(secondValue / 60 / 60);
+    const minutes = Math.floor(secondValue / 60) % 60;
+    const seconds = Math.floor(secondValue - hours * 60 * 60 - minutes * 60);
+    const secondss =
+        seconds < 10 ? "0" + seconds.toString() : seconds.toString();
+    if (hours) {
+        return hours.toString() + ":" + minutes.toString() + ":" + secondss;
+    }
+    return minutes.toString() + ":" + secondss;
+};

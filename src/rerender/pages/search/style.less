@@ -73,8 +73,9 @@ ul.search-tabs {
 .panel {
     position: absolute;
     top: 210px;
-    left: calc(50% - 400px);
-    width: 800px;
+    left: 50%;
+    width: 90vw;
+    transform: translateX(-50%);
     height:calc(100% - 210px - @player-height);
     .pagination {
         position: absolute;
@@ -92,23 +93,3 @@ ul.search-tabs {
 }
 
 
-button {
-    font-family: "groove style";
-    width: 36px;
-    height: 36px;
-    margin: auto;
-    border-radius: 50%;
-    color: rgba(255, 255, 255, 1);
-    font-size: 20px;
-    cursor: pointer;
-    transition: all 0.08s linear;
-
-    &:hover {
-        color: rgba(255, 255, 255, 0.4);
-    }
-
-    &:active {
-        color: rgba(255, 255, 255, 1);
-        background-color: rgba(0, 0, 0, 0.2);
-    }
-}
