@@ -15,4 +15,5 @@ const reducer = combineReducers({
 const composeEnhancers = compose;
 
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
+window.store = store;
 export default store;

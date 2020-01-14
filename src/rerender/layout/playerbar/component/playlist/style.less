@@ -1,3 +1,5 @@
+@import '../../../../theme.less';
+
 .playBar-playList {
     height: 400px;
     width: 300px;
@@ -15,4 +17,81 @@
     border-top-color: #fff;
     right: 5px;
     bottom: -20px;
+}
+.playlist-body {
+    button {
+        display: inline-block;
+        color: #999999;
+        width: 20px;
+        height: 20px;
+        font-size: 16px;
+        margin: 0 5px;
+
+        &:hover {
+            color: #666666;
+        }
+    }
+
+
+    table {
+        width: 100%;
+        font-size: 14px;
+        tr {
+            color: #333;
+            margin: 0;
+            height: 43px;
+
+            .not-show {
+                visibility: hidden;
+            }
+
+            &:nth-child(2n) {
+                background-color: #F7F7F7;
+            }
+
+            &:hover {
+                .not-show {
+                    visibility: visible;
+                }
+
+                background-color: #F2F2F2;
+                border: 1px solid @color-border;
+            }
+        }
+
+        td {
+            margin: 5px auto;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        td.w0 {
+            width: 10%;
+        }
+
+        td.w1 {
+            width: 30%;
+        }
+
+        td.w2 {
+            width: 10%;
+        }
+        td.w3 {
+            width: 30%;
+            color: #666;
+        }
+        td.w4 {
+            width: 15%;
+        }
+
+        a {
+            cursor: pointer;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
 }

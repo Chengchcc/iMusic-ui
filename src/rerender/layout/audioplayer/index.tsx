@@ -1,5 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { getSongUrl } from "../../services";
+import store from "../../reducers";
+import { createAction } from "../../util/aciton";
 
 export const audio = new Audio();
 
@@ -17,7 +20,12 @@ const AudioPlayer: React.FC = () => {
     //effects
     React.useEffect(() => {
         const currentSong = currentSongIMM.toJS();
-        audio.src = currentSong.src;
+        getSongUrl(currentSong.id).then((data: any) => {
+            audio.src = data.data[0].url;
+            if (playing) {
+                audio.play();
+            }
+        });
     }, [currentSongIMM]);
 
     React.useEffect(() => {
@@ -27,6 +35,11 @@ const AudioPlayer: React.FC = () => {
             audio.pause();
         }
     }, [playing]);
+    React.useEffect(() => {
+        audio.addEventListener("ended", () => {
+            store.dispatch(createAction("playlist/next")());
+        });
+    }, []);
 
     return <></>;
 };

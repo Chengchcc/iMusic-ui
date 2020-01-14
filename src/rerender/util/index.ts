@@ -1,7 +1,7 @@
 export const range = (start: number, end: number, step = 1): Array<number> =>
     new Array(Math.ceil((end - start) / step))
         .fill(start)
-        .map((el, i) => el + i + step);
+        .map((el, i) => el + i - 1 + step);
 
 export const shuffle = <T>(array: Array<T>) => {
     let currentIndex = array.length;

@@ -119,17 +119,32 @@ const SongComponent: React.SFC<SongProps> = props => {
         );
     });
 
+    // handlers
+    const handleSong = (type: string) => {
+        store.dispatch(
+            createAction(`playlist/${type}`)({
+                song: {
+                    id,
+                    artists,
+                    duration,
+                    album,
+                    name
+                }
+            })
+        );
+    };
+
     return (
         <tr>
             <td>
-                <button className="play" />
+                <button className="play" onClick={() => handleSong("play")} />
             </td>
             <td className="w0">
                 <a onClick={() => history.push(`/song:${id}`)}>{name}</a>
             </td>
             <td>
                 <span className="not-show">
-                    <button className="add" />
+                    <button className="add" onClick={() => handleSong("add")} />
                     <button className="download" />
                 </span>
             </td>

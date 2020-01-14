@@ -58,6 +58,9 @@ const LyricComponent: React.FC<Props> = props => {
     const handler = React.useCallback(() => {
         const lyricsEle = document.getElementsByClassName("lc-lyrics")[0]!;
         const key = getLyricsKey(audio.currentTime * 1000, lyricJs.current);
+        if (!lyricsEle) {
+            return;
+        }
         const currentPlaying = lyricsEle.querySelector(
             `[playing][data-times='${key}']`
         );

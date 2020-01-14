@@ -11,6 +11,7 @@ import { audio } from "../audioplayer";
 import { readableSecond } from "../../util";
 
 import "./style.less";
+import { getAlbumDetail } from "../../services";
 
 const getMode = (id: number) => {
     switch (id) {
@@ -75,8 +76,10 @@ const Playerbar = () => {
         state.get("playlist").get("currentSong")
     );
 
-    const { duration, name, artist, album, img1v1Url, id } = curentSong.toJS();
-
+    const { duration, name, artists = [], album = { id: "" }, id } = curentSong
+        ? curentSong.toJS()
+        : ({} as any);
+    console.log("album=>", album);
     // state
     const [showSound, setShowSound] = React.useState(false);
     const [showPlayList, setShowPlayList] = React.useState(false);
@@ -181,6 +184,14 @@ const Playerbar = () => {
         },
         []
     );
+
+    const nextSong = () => {
+        store.dispatch(createAction("playlist/next")());
+    };
+    const previousSong = () => {
+        store.dispatch(createAction("playlist/previous")());
+    };
+
     // effects
     React.useEffect(() => {
         const handler = () => {
@@ -199,32 +210,48 @@ const Playerbar = () => {
             audio.removeEventListener("timeupdate", handler);
         };
     });
+    React.useEffect(() => {
+        // get album pic
+        getAlbumDetail(album.id).then((data: any) => {
+            const { album: { picUrl } = { picUrl: "" } } = data;
+            const el = document.getElementsByClassName(
+                "cover"
+            )[0] as HTMLDivElement;
+            el!.setAttribute("style", `background-image: url(${picUrl});`);
+        });
+    }, [album.id]);
 
     // render
+    const artistsViews: any[] = [];
+    artists.forEach((artist: any) => {
+        artistsViews.push("/");
+        artistsViews.push(
+            <a
+                className="link"
+                key={artist.id + ""}
+                onClick={toArtist(artist.id)}
+            >
+                {artist.name}
+            </a>
+        );
+    });
     return (
         <div className="player-container">
             <>
                 <div className="mediainfo" onClick={extendsHandler()}>
-                    <div
-                        className={playing ? "cover" : "cover pause"}
-                        style={{
-                            backgroundImage: `url(${img1v1Url})`
-                        }}
-                    ></div>
+                    <div className={playing ? "cover" : "cover pause"}></div>
                     <div className="song">
-                        <i>单曲:</i>{" "}
+                        <i>单曲: </i>
                         <a className="link" onClick={toSong(id)}>
                             {name}
                         </a>
                     </div>
                     <div className="artist">
-                        <i>歌手: </i>{" "}
-                        <a className="link" onClick={toArtist(artist.id)}>
-                            {artist.name}
-                        </a>
+                        <i>歌手: </i>
+                        {artistsViews.slice(1)}
                     </div>
                     <div className="album">
-                        <i>专辑: </i>{" "}
+                        <i>专辑: </i>
                         <a className="link" onClick={toAlbum(album.id)}>
                             {album.name}
                         </a>
@@ -242,13 +269,17 @@ const Playerbar = () => {
                     <div className="time total">{readableSecond(duration)}</div>
                 </div>
                 <div className="song-controller">
-                    <button className="previous" title="previous" />
+                    <button
+                        className="previous"
+                        title="previous"
+                        onClick={previousSong}
+                    />
                     <button
                         className={playing ? "pause" : "play"}
                         onClick={() => playSong(!playing)}
                         title={playing ? "pause" : "play"}
                     />
-                    <button className="next" title="next" />
+                    <button className="next" title="next" onClick={nextSong} />
                     <button
                         className={`${getMode(mode)}`}
                         onClick={() => swithMode(mode)}
