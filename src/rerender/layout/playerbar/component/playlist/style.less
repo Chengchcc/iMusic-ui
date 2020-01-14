@@ -2,10 +2,11 @@
 
 .playBar-playList {
     height: 400px;
-    width: 300px;
+    width: 500px;
     background-color: #fff;
-    box-shadow: 0 -10px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 -10px 10px rgba(0, 0, 0, 0.2);
     z-index: 999;
+    padding: 5px;
 }
 
 .playBar-playList:after {
@@ -18,7 +19,15 @@
     right: 5px;
     bottom: -20px;
 }
-.playlist-body {
+
+.playList-header {
+    height: 30px;
+    width: 100%;
+    border-bottom: 1px solid @color-border;
+}
+
+.playList-body {
+
     button {
         display: inline-block;
         color: #999999;
@@ -36,11 +45,10 @@
     table {
         width: 100%;
         font-size: 14px;
+        padding: 5px 10px;
         tr {
             color: #333;
-            margin: 0;
             height: 43px;
-
             .not-show {
                 visibility: hidden;
             }
@@ -57,33 +65,36 @@
                 background-color: #F2F2F2;
                 border: 1px solid @color-border;
             }
-        }
 
-        td {
-            margin: 5px auto;
-            display: inline-block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+            td {
+                line-height: 43px;
+                display: inline-block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
 
-        td.w0 {
-            width: 10%;
-        }
+            td.w0 {
+                width: 5%;
+            }
 
-        td.w1 {
-            width: 30%;
-        }
+            td.w1 {
+                width: 30%;
+            }
 
-        td.w2 {
-            width: 10%;
-        }
-        td.w3 {
-            width: 30%;
-            color: #666;
-        }
-        td.w4 {
-            width: 15%;
+            td.w2 {
+                width: 10%;
+                text-align: center;
+            }
+
+            td.w3 {
+                width: 35%;
+                color: #666;
+            }
+
+            td.w4 {
+                width: 10%;
+            }
         }
 
         a {

@@ -1,12 +1,13 @@
 import React from "react";
 import useClickRest from "../../../../components/useClickRest";
-
-import "./style.less";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { readableSecond } from "../../../../util";
 import store from "../../../../reducers";
 import { createAction } from "../../../../util/aciton";
+import Indicator from "../../../../components/Indicator";
+import "./style.less";
+
 interface Props {
     hide: () => any;
 }
@@ -18,6 +19,10 @@ const PlayList: React.FC<Props> = props => {
     const seqPlaylistIMMU = useSelector((state: any) =>
         state.get("playlist").get("seqPlaylist")
     );
+
+    const currentIndex = useSelector((state: any) =>
+        state.get("playlist").get("currentIndex")
+    );
     const seqPlaylist: any[] = seqPlaylistIMMU.toJS();
 
     // effects
@@ -26,7 +31,9 @@ const PlayList: React.FC<Props> = props => {
         handler: hide
     });
     // renders
-    const songs = seqPlaylist.map(el => <SongComponent {...el} key={el.id} />);
+    const songs = seqPlaylist.map((el, idx) => (
+        <SongComponent {...el} key={el.id} active={idx === currentIndex} />
+    ));
 
     const lists = (
         <div className="playList-body">
@@ -43,7 +50,9 @@ const PlayList: React.FC<Props> = props => {
 
     return (
         <div id="playBar-playList" className="playBar-playList">
-            <div className="playList-header"></div>
+            <div className="playList-header">
+                <span>{"播放列表"}</span>
+            </div>
             {songs.length ? lists : emptyList}
         </div>
     );
@@ -60,10 +69,11 @@ interface SongProps {
     }[];
     album: { id: number; name: string };
     duration: number;
+    active: boolean;
 }
 
 const SongComponent: React.SFC<SongProps> = props => {
-    const { id, name, artists, duration, album } = props;
+    const { id, name, artists, duration, album, active } = props;
     const history = useHistory();
     const artistsViews: (string | JSX.Element)[] = [];
     artists.forEach(artist => {
@@ -79,7 +89,8 @@ const SongComponent: React.SFC<SongProps> = props => {
     });
 
     // handlers
-    const handleSong = (type: string) => {
+    const handleSong = (type: string) => (e: React.MouseEvent) => {
+        e.stopPropagation();
         store.dispatch(
             createAction(`playlist/${type}`)({
                 song: {
@@ -93,10 +104,8 @@ const SongComponent: React.SFC<SongProps> = props => {
         );
     };
     return (
-        <tr>
-            <td className="w0">
-                <button className="play" onClick={() => handleSong("play")} />
-            </td>
+        <tr onClick={handleSong("play")}>
+            <td className="w0">{active ? <Indicator /> : null}</td>
             <td className="w1">
                 <a onClick={() => history.push(`/song:${id}`)}>{name}</a>
             </td>
@@ -104,7 +113,7 @@ const SongComponent: React.SFC<SongProps> = props => {
                 <span className="not-show">
                     <button
                         className="delete-trash"
-                        onClick={() => handleSong("delete")}
+                        onClick={handleSong("delete")}
                     />
                 </span>
             </td>
