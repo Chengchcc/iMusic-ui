@@ -17,7 +17,12 @@
         visibility: hidden;
     }
 
-    .lyric{
+    .bgblur {
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    .lyric {
         opacity: 0;
         visibility: hidden;
     }
@@ -60,6 +65,7 @@
     }
 }
 
+.bgblur,
 .lyric,
 .timeline,
 .song-controller,
@@ -166,6 +172,7 @@
         overflow: hidden;
         z-index: 2;
     }
+
     .album {
         visibility: hidden;
     }
@@ -174,6 +181,7 @@
         bottom: 34px;
         font-size: 15px;
     }
+
     .album,
     .artist {
         bottom: 12px;
@@ -183,7 +191,6 @@
 
     &:hover {
         background-color: rgba(0, 0, 0, 0.1);
-        color: rgba(255, 255, 255, 0.9);
     }
 }
 
@@ -194,6 +201,7 @@
         right: 4px;
     }
 }
+
 .controller {
     >div.playBar-playList {
         position: absolute;
@@ -201,6 +209,29 @@
         right: 4px;
     }
 }
+
+.bgblur {
+    width: 100%;
+    height: 100%;
+    padding: 50px;
+    margin: -50px;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    background-position: top;
+    background-size: cover;
+    z-index: -1;
+}
+
+.bgblur::after {
+    content: " ";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
 
 
 .extend {
@@ -218,6 +249,11 @@
         -webkit-app-region: drag;
     }
 
+    .bgblur {
+        opacity: 1;
+        visibility: visible;
+    }
+
     .lyric {
         opacity: 1;
         visibility: visible;
@@ -226,65 +262,82 @@
         right: 20px;
         bottom: 120px;
     }
+
     .mediainfo {
         top: 130px;
         left: 24px;
         height: 150px;
         width: 400px;
         cursor: default;
+
         &:hover {
             background-color: unset;
         }
+
         .song {
             bottom: 100px;
             left: 150px;
         }
+
         .artist {
             bottom: 70px;
             left: 150px;
         }
+
         .album {
             visibility: visible;
             left: 150px;
             bottom: 40px;
         }
+
         .cover {
             height: 90px;
             width: 90px;
             border-radius: 50%;
-            animation:rotator 10s linear infinite;
-            animation-play-state:running;
+            animation: rotator 10s linear infinite;
+            animation-play-state: running;
             border: 20px solid black;
             z-index: 999;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
         }
+
         .pause {
-            animation-play-state:paused;
+            animation-play-state: paused;
         }
     }
+
     .timeline {
         bottom: 72px;
         left: 24px;
         width: calc(100% - 48px);
     }
+
     .song-controller {
         bottom: 24px;
-	    left: 10px;
+        left: 10px;
     }
+
     .controller {
         bottom: 24px;
     }
 
     @keyframes rotator {
-        from{transform:rotate(0deg);}
-        to{transform:rotate(360deg);}
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
     }
 }
 
+
+
 a.link {
-    color: #0c73c2;
     cursor: pointer;
     text-decoration: none;
+
     &:hover {
         background-color: rgba(0, 0, 0, 0.1);
     }

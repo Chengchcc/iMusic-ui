@@ -210,15 +210,7 @@ const Titlebar: React.FC<{ title: string }> = (props: any) => {
         );
     }
 
-    return (
-        <div
-            className={
-                isWindows ? "title-container-win" : "title-container-mac"
-            }
-        >
-            {elements}
-        </div>
-    );
+    return <div className={"title-container"}>{elements}</div>;
 };
 
 export default Titlebar;

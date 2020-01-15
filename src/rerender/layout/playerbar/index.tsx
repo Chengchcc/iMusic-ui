@@ -9,7 +9,9 @@ import PlayList from "./component/playlist";
 import { useHistory } from "react-router-dom";
 import { audio } from "../audioplayer";
 import { readableSecond } from "../../util";
-
+// @ts-ignore
+import ColorThief from "colorthief";
+import Colors from "../../util/colors";
 import "./style.less";
 import { getAlbumDetail } from "../../services";
 
@@ -79,7 +81,6 @@ const Playerbar = () => {
     const { duration, name, artists = [], album = { id: "" }, id } = curentSong
         ? curentSong.toJS()
         : ({} as any);
-    console.log("album=>", album);
     // state
     const [showSound, setShowSound] = React.useState(false);
     const [showPlayList, setShowPlayList] = React.useState(false);
@@ -214,10 +215,41 @@ const Playerbar = () => {
         // get album pic
         getAlbumDetail(album.id).then((data: any) => {
             const { album: { picUrl } = { picUrl: "" } } = data;
-            const el = document.getElementsByClassName(
-                "cover"
-            )[0] as HTMLDivElement;
-            el!.setAttribute("style", `background-image: url(${picUrl});`);
+            const img = new Image();
+            img.setAttribute("crossOrigin", "");
+            img.addEventListener("load", () => {
+                const colorThief = new ColorThief();
+                const rgbColor = colorThief.getColor(img);
+                const cover = document.getElementsByClassName(
+                    "cover"
+                )[0] as HTMLDivElement;
+                const bgblur = document.getElementsByClassName(
+                    "bgblur"
+                )[0] as HTMLDivElement;
+                const playBar = document.getElementsByClassName(
+                    "player-container"
+                )[0] as HTMLDivElement;
+                const titleBar = document.getElementsByClassName(
+                    "title-container"
+                )[0] as HTMLDivElement;
+                const sideBar = document.getElementsByClassName(
+                    "sidebar"
+                )[0] as HTMLDivElement;
+                cover.style.backgroundImage = "url(" + picUrl + ")";
+                bgblur.style.backgroundImage =
+                    "-webkit-linear-gradient(90deg, rgba(" +
+                    rgbColor +
+                    ",0.6), rgba(255, 255, 255, 0),rgba(" +
+                    rgbColor +
+                    ",0.3)),url(" +
+                    picUrl +
+                    ")";
+                const maincolor = Colors.randomColor();
+                playBar.style.backgroundColor = maincolor;
+                titleBar.style.backgroundColor = maincolor;
+                sideBar.style.backgroundColor = maincolor;
+            });
+            img.src = picUrl;
         });
     }, [album.id]);
 
@@ -238,6 +270,7 @@ const Playerbar = () => {
     return (
         <div className="player-container">
             <>
+                <div className="bgblur" />
                 <div className="mediainfo" onClick={extendsHandler()}>
                     <div className={playing ? "cover" : "cover pause"}></div>
                     <div className="song">
