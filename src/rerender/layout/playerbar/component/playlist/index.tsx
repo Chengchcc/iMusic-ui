@@ -103,11 +103,15 @@ const SongComponent: React.SFC<SongProps> = props => {
             })
         );
     };
+    const toSong = (id: number) => (e: React.MouseEvent) => {
+        e.stopPropagation();
+        history.push(`/song:${id}`);
+    };
     return (
         <tr onClick={handleSong("play")}>
             <td className="w0">{active ? <Indicator /> : null}</td>
             <td className="w1">
-                <a onClick={() => history.push(`/song:${id}`)}>{name}</a>
+                <a onClick={toSong(id)}>{name}</a>
             </td>
             <td className="w2">
                 <span className="not-show">

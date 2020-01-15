@@ -21,7 +21,8 @@ function createWindow() {
     width: 1024, height: 768, show: false, frame:false,
     minWidth: 1024, minHeight: 768,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      experimentalFeatures: true
     }
   });
 
