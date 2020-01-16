@@ -5,6 +5,10 @@ import Main from "../../components/main";
 import { Tabs } from "../../components/tabs";
 import SearchTab from "./component/searchTab";
 import SearchSong from "./component/searchSong";
+import SearchAlbum from "./component/searchAlbum";
+import SearchArtist from "./component/searchArtist";
+import SearchPlaylist from "./component/searchPlaylist";
+
 import "./style.less";
 import { useQuery } from "../../util/hooks";
 import { useHistory } from "react-router-dom";
@@ -84,13 +88,12 @@ const Search: React.FC = () => {
                         title={"歌单"}
                         onClick={i => onSearch(undefined, i)}
                     />
-                    <SearchTab
-                        title={"电台"}
-                        onClick={i => onSearch(undefined, i)}
-                    />
                 </ul>
                 {/* panel list */}
                 <SearchSong keywords={keywords} />
+                <SearchAlbum keywords={keywords} />
+                <SearchArtist keywords={keywords} />
+                <SearchPlaylist keywords={keywords} />
             </Tabs>
         </Main>
     );
