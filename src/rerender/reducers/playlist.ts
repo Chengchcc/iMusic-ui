@@ -18,10 +18,14 @@ const defaultState = fromJS({
 });
 // reducer
 const changeMode = (state: any, mode: PlayMode) => {
-    const seqPlaylist = state.get("seqPlaylist");
-    const currentIndex = state.get("currentIndex");
-    const len = seqPlaylist.size;
-    const [indexlist, newCurr] = adJustIndexList(len, currentIndex, mode);
+    const idxlist: number[] = state.get("indexlist").toJS();
+    const currIdx = state.get("currentIndex");
+    const currentIndex = idxlist[currIdx];
+    const [indexlist, newCurr] = adJustIndexList(
+        idxlist.length,
+        currentIndex,
+        mode
+    );
     return state.merge({
         indexlist: fromJS(indexlist),
         mode: mode,
@@ -31,106 +35,106 @@ const changeMode = (state: any, mode: PlayMode) => {
 
 const changeSong = (state: any, next: boolean) => {
     const indexlist: number[] = state.get("indexlist").toJS();
-    const currentIndex = state.get("currentIndex");
+    const currIdx = state.get("currentIndex");
     const seqPlaylist: any[] = state.get("seqPlaylist").toJS();
     if (!indexlist.length) return;
-    let idx = -1;
-    indexlist.forEach((id, index) => {
-        if (id === currentIndex) {
-            idx = index;
-        }
-    });
+    let idx = currIdx;
     next ? idx++ : idx--;
     idx = (idx + indexlist.length) % indexlist.length;
     const index = indexlist[idx];
     const currentSong = seqPlaylist[index];
     return state.merge({
-        currentIndex: index,
+        currentIndex: idx,
         currentSong: fromJS(currentSong)
     });
 };
 
 // add song at the end of the list
-const handleAddSong = (state: any, song: any) => {
-    const seqPlaylist: any[] = state.get("seqPlaylist").toJS();
-    const indexlist: number[] = state.get("indexlist").toJS();
-    const currentIndex = indexlist[state.get("currentIndex")];
-    const findex = findIndex(song, seqPlaylist);
-    // if is current song doing nothing
-    if (findex > -1) return state;
-    seqPlaylist.push(song);
-    const newCurrIndex = currentIndex === -1 ? 0 : currentIndex;
+const handleAddSong = <T extends { id: number }>(state: any, song: T) => {
+    const currIdx = state.get("currentIndex");
+    const idxlist = state.get("indexlist").toJS();
+    const itemlist = state.get("seqPlaylist").toJS() as T[];
     const mode = state.get("mode");
-    const [indexlist_, newCurr] = adJustIndexList(
-        seqPlaylist.length,
-        newCurrIndex,
+    const curr = idxlist[currIdx];
+    const fidx = itemlist.findIndex(el => song.id === el.id);
+    if (fidx > -1) return state;
+    itemlist.push(song);
+    const [indexlist, currentIndex] = adJustIndexList(
+        curr,
+        itemlist.length,
         mode
     );
     return state.merge({
-        seqPlaylist: fromJS(seqPlaylist),
-        currentIndex: newCurr,
-        indexlist: fromJS(indexlist_)
+        currentIndex,
+        indexlist: fromJS(indexlist),
+        seqPlaylist: fromJS(itemlist)
     });
 };
 
 // play song, exsit-> go to; not exist -> insert
-const handlePlaySong = (state: any, song: any) => {
-    const seqPlaylist: any[] = state.get("seqPlaylist").toJS();
-    const indexlist: number[] = state.get("indexlist").toJS();
-    const findex = findIndex(song, seqPlaylist);
-    if (findex > -1) {
-        // exsit
-        const newSong = seqPlaylist[findex];
-        return state.merge({
-            currentIndex: findex,
-            currentSong: fromJS(newSong)
-        });
-    }
-    const currentIndex = indexlist[state.get("currentIndex")];
-    // insert
-    const newCurrIndex = (currentIndex + 1) % (seqPlaylist.length + 1);
-    seqPlaylist.splice(newCurrIndex, 0, song);
-    // adjust indexlist
+const handlePlaySong = <T extends { id: number }>(state: any, song: T) => {
+    const currIdx = state.get("currentIndex");
+    const idxlist = state.get("indexlist").toJS();
+    const itemlist = state.get("seqPlaylist").toJS() as T[];
     const mode = state.get("mode");
-    const [indexlist_, newCurr] = adJustIndexList(
-        seqPlaylist.length,
-        newCurrIndex,
+    let curr = idxlist[currIdx];
+    const fidx = itemlist.findIndex(el => song.id === el.id);
+    if (fidx === curr) return state; // is playing
+    if (fidx === -1) {
+        // not exsit
+        curr++;
+        itemlist.splice(curr, 0, song);
+    }
+    const [indexlist, currentIndex] = adJustIndexList(
+        curr,
+        itemlist.length,
         mode
     );
+    const currentItem = itemlist[currentIndex];
     return state.merge({
-        indexlist: fromJS(indexlist_),
-        currentIndex: newCurr,
-        seqPlaylist: fromJS(seqPlaylist),
-        currentSong: fromJS(song),
+        currentIndex,
+        indexlist: fromJS(indexlist),
+        seqPlaylist: fromJS(itemlist),
+        currentSong: fromJS(currentItem),
         playing: true
     });
 };
 
 // delete song
-const handleDeleteSong = (state: any, song: any) => {
-    const seqPlaylist: any[] = state.get("seqPlaylist").toJS();
-    const indexlist: number[] = state.get("indexlist").toJS();
-    const findex = findIndex(song, seqPlaylist);
-    if (findex === -1) return state;
-    const currentIndex = indexlist[state.get("currentIndex")];
-    seqPlaylist.splice(findex, 1);
-    const newCurrIndex =
-        currentIndex === findex
-            ? (currentIndex + 1) % seqPlaylist.length
-            : currentIndex;
-    // adjust indexlist
+const handleDeleteSong = <T extends { id: number }>(state: any, song: T) => {
+    const currIdx = state.get("currentIndex");
+    const idxlist = state.get("indexlist").toJS();
+    const itemlist = state.get("seqPlaylist").toJS() as T[];
     const mode = state.get("mode");
-    const [indexlist_, newCurr_] = adJustIndexList(
-        seqPlaylist.length,
-        newCurrIndex,
+    const curr = idxlist[currIdx];
+    const fidx = itemlist.findIndex(el => song.id === el.id);
+    if (fidx === -1) return state; // not exist
+    if (fidx === curr) {
+        // is playing
+        itemlist.splice(curr, 1);
+        const currentItem = itemlist[curr];
+        const [indexlist, currentIndex] = adJustIndexList(
+            curr,
+            itemlist.length,
+            mode
+        );
+        return state.merge({
+            currentIndex,
+            indexlist: fromJS(indexlist),
+            seqPlaylist: fromJS(itemlist),
+            currentSong: fromJS(currentItem)
+        });
+    }
+    itemlist.splice(fidx, 1);
+    const [indexlist, currentIndex] = adJustIndexList(
+        curr,
+        itemlist.length,
         mode
     );
-    const newCurrSong = seqPlaylist[newCurrIndex];
     return state.merge({
-        indexlist: fromJS(indexlist_),
-        currentIndex: newCurr_,
-        seqPlaylist: fromJS(seqPlaylist),
-        currentSong: fromJS(newCurrSong)
+        currentIndex,
+        indexlist: fromJS(indexlist),
+        seqPlaylist: fromJS(itemlist)
     });
 };
 
@@ -170,16 +174,21 @@ const findIndex = <T extends { id: number }>(song: T, songList: T[]) => {
     return idx;
 };
 
-const adJustIndexList = (len: number, currentIndex: number, mode: PlayMode) => {
+const adJustIndexList = (
+    len: number,
+    curr: number,
+    mode: PlayMode
+): [number[], number] => {
     const indexlist = range(0, len);
-    let currentIndex_ = currentIndex;
-    if (mode === PlayMode.loop) {
-        indexlist.fill(currentIndex);
-    } else if (mode === PlayMode.random) {
-        shuffle(indexlist);
-        indexlist.forEach((e, idx) => {
-            if (currentIndex == e) currentIndex_ = idx;
-        });
+    switch (mode) {
+        case PlayMode.loop:
+            return [indexlist.fill(curr), curr];
+        case PlayMode.random: {
+            shuffle(indexlist);
+            const idx = indexlist.findIndex(el => el === curr);
+            return [indexlist, idx];
+        }
+        default:
+            return [indexlist, curr];
     }
-    return [indexlist, currentIndex_];
 };
