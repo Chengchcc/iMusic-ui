@@ -1,0 +1,58 @@
+ @import '../../theme.less';
+
+ table {
+     width: 100%;
+
+     tr {
+         color: #333;
+         margin: 0;
+         height: 43px;
+
+         .not-show {
+             visibility: hidden;
+         }
+
+         &:nth-child(2n) {
+             background-color: #F7F7F7;
+         }
+
+         &:hover {
+             .not-show {
+                 visibility: visible;
+             }
+
+             background-color: #F2F2F2;
+             border: 1px solid @color-border;
+         }
+     }
+
+     td {
+         margin: 5px auto;
+         display: inline-block;
+         white-space: nowrap;
+         overflow: hidden;
+         text-overflow: ellipsis;
+     }
+
+     td.w0 {
+         width: 370px;
+     }
+
+     td.w1 {
+         margin-left: 10px;
+         width: 15%;
+     }
+
+     td.w2 {
+         width: 18%;
+         color: #666;
+     }
+
+     a {
+         cursor: pointer;
+
+         &:hover {
+             text-decoration: underline;
+         }
+     }
+ }

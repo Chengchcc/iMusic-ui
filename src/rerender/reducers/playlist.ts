@@ -22,8 +22,8 @@ const changeMode = (state: any, mode: PlayMode) => {
     const currIdx = state.get("currentIndex");
     const currentIndex = idxlist[currIdx];
     const [indexlist, newCurr] = adJustIndexList(
-        idxlist.length,
         currentIndex,
+        idxlist.length,
         mode
     );
     return state.merge({
@@ -55,7 +55,7 @@ const handleAddSong = <T extends { id: number }>(state: any, song: T) => {
     const idxlist = state.get("indexlist").toJS();
     const itemlist = state.get("seqPlaylist").toJS() as T[];
     const mode = state.get("mode");
-    const curr = idxlist[currIdx];
+    const curr = isNaN(idxlist[currIdx]) ? 0 : idxlist[currIdx];
     const fidx = itemlist.findIndex(el => song.id === el.id);
     if (fidx > -1) return state;
     itemlist.push(song);
@@ -77,25 +77,27 @@ const handlePlaySong = <T extends { id: number }>(state: any, song: T) => {
     const idxlist = state.get("indexlist").toJS();
     const itemlist = state.get("seqPlaylist").toJS() as T[];
     const mode = state.get("mode");
-    let curr = idxlist[currIdx];
+    let curr = isNaN(idxlist[currIdx]) ? -1 : idxlist[currIdx];
     const fidx = itemlist.findIndex(el => song.id === el.id);
-    if (fidx === curr) return state; // is playing
+    if (fidx === curr && fidx !== -1) return state; // is playing
     if (fidx === -1) {
         // not exsit
         curr++;
         itemlist.splice(curr, 0, song);
+    } else {
+        curr = fidx;
     }
     const [indexlist, currentIndex] = adJustIndexList(
         curr,
         itemlist.length,
         mode
     );
-    const currentItem = itemlist[currentIndex];
+    const currentSong = itemlist[curr];
     return state.merge({
         currentIndex,
         indexlist: fromJS(indexlist),
         seqPlaylist: fromJS(itemlist),
-        currentSong: fromJS(currentItem),
+        currentSong: fromJS(currentSong),
         playing: true
     });
 };
@@ -175,8 +177,8 @@ const findIndex = <T extends { id: number }>(song: T, songList: T[]) => {
 };
 
 const adJustIndexList = (
-    len: number,
     curr: number,
+    len: number,
     mode: PlayMode
 ): [number[], number] => {
     const indexlist = range(0, len);

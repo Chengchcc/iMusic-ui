@@ -1,0 +1,127 @@
+@import '../../../../theme.less';
+
+.col-t {
+    display: inline-block;
+    height: @col-size;
+    width: @col-size;
+    margin: 10px 0;
+}
+
+.col-detail {
+    position: relative;
+    overflow: hidden;
+    height: 400px;
+    transition-duration: 0.169687s;
+    transition-property: height;
+    transition-timing-function: linear;
+
+    .col-detail-container {
+        button {
+            display: inline-block;
+            color: #999999;
+            width: 20px;
+            height: 20px;
+            font-size: 16px;
+            margin: 0 5px;
+
+            &:hover {
+                color: #666666;
+            }
+        }
+
+        position: absolute;
+        z-index: 10;
+        width: 100%;
+        height: calc(100% - 13px);
+        top: 13;
+        .col-detail-cover {
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            width: 300px;
+            height: 300px;
+            background-size: contain;
+        }
+        .col-detail-songs {
+            background-color: #ffffff;
+            position: absolute;
+            width: 60%;
+            height: calc(100% - 20px);
+            top: 20px;
+            right: 0;
+            overflow-y: auto;
+            td {
+                margin: 5px auto;
+                display: inline-block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            td.w0 {
+                width: 150px;
+            }
+
+            td.w1 {
+                margin-left: 10px;
+                width: 15%;
+            }
+
+            td.w2 {
+                width: 30%;
+                color: #666;
+            }
+        }
+    }
+}
+
+.col-detail::before {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: calc(100% - 13px);
+    border-top: 1px solid #e2e2e5;
+    border-bottom: 1px solid #e2e2e5;
+    background-color: #f8f9fb;
+}
+
+.col-detail>.point {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 12px solid transparent;
+    border-bottom-color: #e2e2e5;
+    transform: translateX(100px);
+    transition: transform 0.2s ease-out;
+    top: -12px;
+    left: 0px;
+}
+
+.col-detail>.point::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 12px solid transparent;
+    border-bottom-color: #f8f9fb;
+    top: -10px;
+    left: -12px;
+}
+
+.col-detail.first>.point {
+    transform: translateX(calc(@col-size * 0 + @col-size / 2 - 12px));
+}
+
+.col-detail.second>.point {
+    transform: translateX(calc(@col-size * 1 + @col-size / 2 - 12px));
+}
+
+.col-detail.third>.point {
+    transform: translateX(calc(@col-size * 2 + @col-size / 2 - 12px));
+}
+
+.col-detail.fourth>.point {
+    transform: translateX(calc(@col-size * 3 + @col-size / 2 - 12px));
+}

@@ -91,8 +91,10 @@ const LyricComponent: React.FC<Props> = props => {
 
     // effects
     React.useEffect(() => {
-        setIsLoading(true);
-        getlyric(songId).then(() => setIsLoading(false));
+        if (songId) {
+            setIsLoading(true);
+            getlyric(songId).then(() => setIsLoading(false));
+        }
     }, [songId]);
 
     React.useEffect(() => {

@@ -25,3 +25,17 @@ export const readableSecond = (milsecondValue: number) => {
     }
     return minutes.toString() + ":" + secondss;
 };
+
+export function chunk(item: any[], size: number) {
+    if (item.length <= 0 || size <= 0) {
+        return item;
+    }
+
+    const chunks = [];
+
+    for (let i = 0; i < item.length; i = i + size) {
+        chunks.push(item.slice(i, i + size));
+    }
+
+    return chunks;
+}

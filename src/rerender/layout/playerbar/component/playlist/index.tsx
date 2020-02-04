@@ -20,9 +20,14 @@ const PlayList: React.FC<Props> = props => {
         state.get("playlist").get("seqPlaylist")
     );
 
-    const currentIndex = useSelector((state: any) =>
-        state.get("playlist").get("currentIndex")
-    );
+    const currentIndex = useSelector((state: any) => {
+        const indexlist = state
+            .get("playlist")
+            .get("indexlist")
+            .toJS();
+        const idx = indexlist[state.get("playlist").get("currentIndex")];
+        return isNaN(idx) ? -1 : idx;
+    });
     const seqPlaylist: any[] = seqPlaylistIMMU.toJS();
 
     // effects

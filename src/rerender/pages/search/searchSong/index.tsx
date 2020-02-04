@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
-import { usePanelState } from "../../../../components/tabs/hooks";
+import { usePanelState } from "../../../components/tabs/hooks";
 import { useSelector } from "react-redux";
-import store from "../../../../reducers";
-import { createAction } from "../../../../util/aciton";
-import Loader from "../../../../components/loader";
-import Pagination from "../../../../components/pagination";
-import { readableSecond } from "../../../../util";
-import { useHistory } from "react-router-dom";
-
+import store from "../../../reducers";
+import { createAction } from "../../../util/aciton";
+import Loader from "../../../components/loader";
+import Pagination from "../../../components/pagination";
+import SongComponent from "../../../components/songComponent";
 import "./style.less";
+
 interface Props {
     keywords: string;
 }
@@ -49,7 +48,7 @@ const SearchSong: React.FC<Props> = props => {
                 createAction("search/getsongs")({ keywords, page: 1 })
             );
         }
-    }, [keywords]);
+    }, [keywords, isActive]);
 
     React.useEffect(() => {
         const resBox = document.getElementById("song-res");
@@ -91,70 +90,3 @@ const SearchSong: React.FC<Props> = props => {
 };
 
 export default SearchSong;
-
-interface SongProps {
-    id: number;
-    name: string;
-    artists: {
-        id: number;
-        name: string;
-    }[];
-    album: { id: number; name: string };
-    duration: number;
-}
-
-const SongComponent: React.SFC<SongProps> = props => {
-    const { id, name, artists, album, duration } = props;
-    const history = useHistory();
-    const artistsViews: (string | JSX.Element)[] = [];
-    artists.forEach(artist => {
-        artistsViews.push("/");
-        artistsViews.push(
-            <a
-                key={artist.id + ""}
-                onClick={() => history.push(`/artist:${artist.id}`)}
-            >
-                {artist.name}
-            </a>
-        );
-    });
-
-    // handlers
-    const handleSong = (type: string) => {
-        store.dispatch(
-            createAction(`playlist/${type}`)({
-                song: {
-                    id,
-                    artists,
-                    duration,
-                    album,
-                    name
-                }
-            })
-        );
-    };
-
-    return (
-        <tr>
-            <td>
-                <button className="play" onClick={() => handleSong("play")} />
-            </td>
-            <td className="w0">
-                <a onClick={() => history.push(`/song:${id}`)}>{name}</a>
-            </td>
-            <td>
-                <span className="not-show">
-                    <button className="add" onClick={() => handleSong("add")} />
-                    <button className="download" />
-                </span>
-            </td>
-            <td className="w1">{artistsViews.slice(1)}</td>
-            <td className="w2">
-                <a
-                    onClick={() => history.push(`/album:${album.id}`)}
-                >{`《${album.name}》`}</a>
-            </td>
-            <td>{readableSecond(duration)}</td>
-        </tr>
-    );
-};

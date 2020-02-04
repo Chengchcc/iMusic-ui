@@ -4,10 +4,10 @@ import React from "react";
 import Main from "../../components/main";
 import { Tabs } from "../../components/tabs";
 import SearchTab from "./component/searchTab";
-import SearchSong from "./component/searchSong";
-import SearchAlbum from "./component/searchAlbum";
-import SearchArtist from "./component/searchArtist";
-import SearchPlaylist from "./component/searchPlaylist";
+import SearchSong from "./searchSong";
+import SearchAlbum from "./searchAlbum";
+import SearchArtist from "./searchArtist";
+import SearchPlaylist from "./searchPlaylist";
 
 import "./style.less";
 import { useQuery } from "../../util/hooks";
@@ -15,14 +15,16 @@ import { useHistory } from "react-router-dom";
 
 const Search: React.FC = () => {
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const indexRef = React.useRef(0);
     const [keywords, setKeywords] = React.useState("");
     const [currentIndex, setActive] = React.useState(0);
     const history = useHistory();
     const params = useQuery();
     // handlers
     const onSearch = (k?: string, type?: number) => {
-        const url = `/search?keywords=${k || keywords}&type=${index2Type(
-            type === undefined ? currentIndex : type
+        const url = `/search?keywords=${k ||
+            inputRef.current?.value}&type=${index2Type(
+            type === undefined ? indexRef.current : type
         )}`;
         history.push(url);
     };
@@ -57,6 +59,7 @@ const Search: React.FC = () => {
         }
         if (type) {
             setActive(type2Index(Number(type)));
+            indexRef.current = type2Index(Number(type));
         }
     }, [params]);
 
@@ -106,13 +109,11 @@ const index2Type = (idx: number) => {
         case 0:
             return 1;
         case 1:
-            return 100;
-        case 2:
             return 10;
+        case 2:
+            return 100;
         case 3:
             return 1000;
-        case 4:
-            return 1009;
     }
 };
 
@@ -120,14 +121,12 @@ const type2Index = (type: number) => {
     switch (type) {
         case 1:
             return 0;
-        case 100:
-            return 1;
         case 10:
+            return 1;
+        case 100:
             return 2;
         case 1000:
             return 3;
-        case 1009:
-            return 4;
         default:
             return 4;
     }

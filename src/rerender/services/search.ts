@@ -11,6 +11,7 @@ export const search = async (
     page: number,
     limit = LIMIT
 ) => {
+    if (!keywords) return;
     const type = str2SearchType(searchType);
     try {
         const url = `${baseApi}/search?keywords=${keywords}&limit=${limit}&offset=${(page -
@@ -54,6 +55,7 @@ const parse = (data: any, type: string, page: number) => {
     }
     const list: any[] = [];
     let total = 0;
+    console.log("data.result", data);
     if (type === "songs") {
         data.result.songs.map((e: any) => {
             list.push({

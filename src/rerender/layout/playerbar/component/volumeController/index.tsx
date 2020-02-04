@@ -50,7 +50,6 @@ const VolumeController: React.FC<Props> = props => {
 
         document.onmousemove = e1 => {
             const reviseHeight = maxHeight - (e1.clientY - offsetTop);
-            let reviseProgressValue;
             if (reviseHeight > maxHeight) {
                 reviseProgressValue = 1;
             } else if (reviseHeight < 0) {

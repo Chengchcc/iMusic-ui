@@ -20,12 +20,14 @@ const AudioPlayer: React.FC = () => {
     //effects
     React.useEffect(() => {
         const currentSong = currentSongIMM.toJS();
-        getSongUrl(currentSong.id).then((data: any) => {
-            audio.src = data.data[0].url;
-            if (playing) {
-                audio.play();
-            }
-        });
+        if (currentSong.id) {
+            getSongUrl(currentSong.id).then((data: any) => {
+                audio.src = data.data[0].url;
+                if (playing) {
+                    audio.play();
+                }
+            });
+        }
     }, [currentSongIMM]);
 
     React.useEffect(() => {
