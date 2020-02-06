@@ -4,13 +4,12 @@ import { useSelector } from "react-redux";
 import Loader from "../../../components/loader";
 import store from "../../../reducers";
 import { createAction } from "../../../util/aciton";
-import ColumGroup from "../component/columGroup";
 import { chunk } from "../../../util";
 import Pagination from "../../../components/pagination";
 import { getPlaylistDetail } from "../../../services";
 import { TSong } from "../../../types";
+import ColumGroup from "../../../components/columGroup";
 
-import "./style.less";
 interface Props {
     keywords: string;
 }
@@ -53,7 +52,7 @@ const SearchPlaylist: React.FC<Props> = props => {
     }, [keywords, isActive]);
 
     React.useEffect(() => {
-        const anodes = document?.querySelectorAll(".playlist-container>span");
+        const anodes = document?.querySelectorAll(".advanced-container>span");
         const reg = keywords.replace(/[-/^$*+?.()|[]{}]/g, "$&");
         anodes?.forEach(node => {
             const text = node.innerHTML;
@@ -73,7 +72,7 @@ const SearchPlaylist: React.FC<Props> = props => {
                 key={idx + ""}
                 data={chk}
                 renderData={el => (
-                    <div className="playlist-container">
+                    <div className="advanced-container">
                         <div
                             className="thumb-img"
                             style={{ backgroundImage: `url(${el.cover})` }}
@@ -92,7 +91,7 @@ const SearchPlaylist: React.FC<Props> = props => {
             {isLoading && <Loader show />}
             {!isLoading && playlists.length > 0 && (
                 <>
-                    <div className="playlists-res">{cols}</div>
+                    <div className="advanced-res">{cols}</div>
                     <Pagination
                         currentPage={currentPage}
                         className="pagination"

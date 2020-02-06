@@ -1,0 +1,48 @@
+@import '../../theme.less';
+
+ul.page-tabs {
+    position: absolute;
+    top: 80px;
+    left: 10px;
+
+    li {
+        font-family: "Microsoft YaHei";
+        list-style: none;
+        display: inline-block;
+        cursor: pointer;
+        color: #d6d6d6;
+        font-size: 16px;
+        transition: font-size 0.05s linear;
+        letter-spacing: 2px;
+
+        &.active {
+            transition: font-size 0.05s linear;
+            color: #000000;
+            font-size: 20px;
+        }
+
+        &:before {
+            color: #d6d6d6;
+            content: " /"
+        }
+
+        &:first-child::before {
+            content: none;
+        }
+    }
+}
+
+.pannel {
+    position: absolute;
+    display: flex;
+    top: 150px;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
+    height: calc(100% - 150px - @player-height);
+    justify-content: center;
+}
+
+.pannel.hide {
+    visibility: hidden;
+}

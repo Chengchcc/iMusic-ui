@@ -213,44 +213,46 @@ const Playerbar = () => {
     });
     React.useEffect(() => {
         // get album pic
-        getAlbumDetail(album.id).then((data: any) => {
-            const { album: { picUrl } = { picUrl: "" } } = data;
-            const img = new Image();
-            img.setAttribute("crossOrigin", "");
-            img.addEventListener("load", () => {
-                const colorThief = new ColorThief();
-                const rgbColor = colorThief.getColor(img);
-                const cover = document.getElementsByClassName(
-                    "cover"
-                )[0] as HTMLDivElement;
-                const bgblur = document.getElementsByClassName(
-                    "bgblur"
-                )[0] as HTMLDivElement;
-                const playBar = document.getElementsByClassName(
-                    "player-container"
-                )[0] as HTMLDivElement;
-                const titleBar = document.getElementsByClassName(
-                    "title-container"
-                )[0] as HTMLDivElement;
-                const sideBar = document.getElementsByClassName(
-                    "sidebar"
-                )[0] as HTMLDivElement;
-                cover.style.backgroundImage = "url(" + picUrl + ")";
-                bgblur.style.backgroundImage =
-                    "-webkit-linear-gradient(90deg, rgba(" +
-                    rgbColor +
-                    ",0.6), rgba(255, 255, 255, 0),rgba(" +
-                    rgbColor +
-                    ",0.3)),url(" +
-                    picUrl +
-                    ")";
-                const maincolor = Colors.randomColor();
-                playBar.style.backgroundColor = maincolor;
-                titleBar.style.backgroundColor = maincolor;
-                sideBar.style.backgroundColor = maincolor;
+        if (album.id) {
+            getAlbumDetail(album.id).then((data: any) => {
+                const { album: { picUrl } = { picUrl: "" } } = data;
+                const img = new Image();
+                img.setAttribute("crossOrigin", "");
+                img.addEventListener("load", () => {
+                    const colorThief = new ColorThief();
+                    const rgbColor = colorThief.getColor(img);
+                    const cover = document.getElementsByClassName(
+                        "cover"
+                    )[0] as HTMLDivElement;
+                    const bgblur = document.getElementsByClassName(
+                        "bgblur"
+                    )[0] as HTMLDivElement;
+                    const playBar = document.getElementsByClassName(
+                        "player-container"
+                    )[0] as HTMLDivElement;
+                    const titleBar = document.getElementsByClassName(
+                        "title-container"
+                    )[0] as HTMLDivElement;
+                    const sideBar = document.getElementsByClassName(
+                        "sidebar"
+                    )[0] as HTMLDivElement;
+                    cover.style.backgroundImage = "url(" + picUrl + ")";
+                    bgblur.style.backgroundImage =
+                        "-webkit-linear-gradient(90deg, rgba(" +
+                        rgbColor +
+                        ",0.6), rgba(255, 255, 255, 0),rgba(" +
+                        rgbColor +
+                        ",0.3)),url(" +
+                        picUrl +
+                        ")";
+                    const maincolor = Colors.randomColor();
+                    playBar.style.backgroundColor = maincolor;
+                    titleBar.style.backgroundColor = maincolor;
+                    sideBar.style.backgroundColor = maincolor;
+                });
+                img.src = picUrl;
             });
-            img.src = picUrl;
-        });
+        }
     }, [album.id]);
 
     // render

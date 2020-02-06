@@ -71,6 +71,19 @@ const handleAddSong = <T extends { id: number }>(state: any, song: T) => {
     });
 };
 
+// add songs
+const handleAddSongs = <T extends { id: number }>(state: any, songs: T[]) => {
+    const mode = state.get("mode");
+    const [indexlist, currentIndex] = adJustIndexList(0, songs.length, mode);
+    return state.merge({
+        currentIndex,
+        indexlist: fromJS(indexlist),
+        seqPlaylist: fromJS(songs),
+        currentSong: fromJS(songs[0]),
+        playing: true
+    });
+};
+
 // play song, exsit-> go to; not exist -> insert
 const handlePlaySong = <T extends { id: number }>(state: any, song: T) => {
     const currIdx = state.get("currentIndex");
@@ -158,6 +171,9 @@ export default (state = defaultState, action: any) => {
     }
     if (action.type === "playlist/play") {
         return handlePlaySong(state, action.payload.song);
+    }
+    if (action.type === "playlist/playall") {
+        return handleAddSongs(state, action.payload.songs);
     }
     if (action.type === "playlist/delete") {
         return handleDeleteSong(state, action.payload.song);

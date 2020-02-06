@@ -40,6 +40,7 @@ ul.search-tabs {
     transform: translateX(-50%);
     width: fit-content;
     padding: 0;
+
     li {
         background-color: #F7F7F7;
         list-style: none;
@@ -88,7 +89,8 @@ ul.search-tabs {
     width: 100vw;
     transform: translateX(-50%);
     height: calc(100% - 210px - @player-height);
-    justify-content : center;
+    justify-content: center;
+
     .pagination {
         position: absolute;
         bottom: 0;
@@ -102,4 +104,41 @@ ul.search-tabs {
 
 .hide {
     visibility: hidden;
+}
+
+
+.advanced-res {
+    height: calc(100% - 100px);
+    padding: 10px 0px;
+    overflow-y: auto;
+    width: calc(@col-size * 4 + 20px);
+
+    .hide {
+        height: 0px;
+    }
+
+    .advanced-container {
+        height: 240px;
+        width: 220px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: column;
+        .thumb-img {
+            height: 200px;
+            width: 200px;
+            cursor: pointer;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 1px;
+            box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        span {
+            margin-top: 10px;
+            text-align: center;
+        }
+    }
 }

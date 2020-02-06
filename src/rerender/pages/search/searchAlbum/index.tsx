@@ -5,12 +5,10 @@ import Loader from "../../../components/loader";
 import store from "../../../reducers";
 import { createAction } from "../../../util/aciton";
 import { chunk } from "../../../util";
-import ColumGroup from "../component/columGroup";
 import { getAlbumDetail } from "../../../services";
 import { TSong } from "../../../types";
 import Pagination from "../../../components/pagination";
-
-import "./style.less";
+import ColumGroup from "../../../components/columGroup";
 
 interface Props {
     keywords: string;
@@ -55,7 +53,7 @@ const SearchAlbum: React.FC<Props> = props => {
     }, [keywords, isActive]);
 
     React.useEffect(() => {
-        const anodes = document?.querySelectorAll(".album-container>span");
+        const anodes = document?.querySelectorAll(".advanced-container>span");
         const reg = keywords.replace(/[-/^$*+?.()|[]{}]/g, "$&");
         anodes?.forEach(node => {
             const text = node.innerHTML;
@@ -75,7 +73,7 @@ const SearchAlbum: React.FC<Props> = props => {
                 key={idx + ""}
                 data={chk}
                 renderData={el => (
-                    <div className="album-container">
+                    <div className="advanced-container">
                         <div
                             className="thumb-img"
                             style={{ backgroundImage: `url(${el.cover})` }}
@@ -94,7 +92,7 @@ const SearchAlbum: React.FC<Props> = props => {
             {isLoading && <Loader show />}
             {!isLoading && albums.length > 0 && (
                 <>
-                    <div className="albums-res">{cols}</div>
+                    <div className="advanced-res">{cols}</div>
                     <Pagination
                         currentPage={currentPage}
                         className="pagination"

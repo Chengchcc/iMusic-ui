@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { ReactNode } from "react";
-import SongComponent from "../../../../components/songComponent";
-import { TSong } from "../../../../types";
-import Loader from "../../../../components/loader";
+import { useDispatch } from "react-redux";
+import { createAction } from "../../util/aciton";
+import { TSong } from "../../types";
+import SongComponent from "../songComponent";
+import Loader from "../loader";
 import "./style.less";
 
 interface Props<T> {
@@ -15,12 +17,23 @@ const ColumGroup: React.FC<Props<any>> = props => {
     const { data, renderData, getDetail } = props;
     const refDetail = React.useRef<HTMLDivElement>(null);
     const [detail, setDetail] = React.useState<any>({});
+    const dispatch = useDispatch();
     if (data.length > COL_NUM) {
         console.warn(
             `data length require lte ${COL_NUM}. current is  ${data.length}`
         );
     }
     const cols: React.ReactNode[] = [];
+
+    // handles
+    const playAll = React.useCallback(() => {
+        dispatch(
+            createAction("playlist/playall")({
+                songs: detail.songs
+            })
+        );
+    }, [detail]);
+    // renders
     for (let i = 0; i < Math.min(data.length, COL_NUM); i++) {
         cols.push(
             <div
@@ -29,7 +42,7 @@ const ColumGroup: React.FC<Props<any>> = props => {
                 onClick={e => {
                     e.stopPropagation();
                     const details = document.querySelectorAll(
-                        ".albums-res>.col-detail"
+                        ".advanced-res>.col-detail"
                     );
                     // reset
                     setDetail({});
@@ -64,6 +77,11 @@ const ColumGroup: React.FC<Props<any>> = props => {
                         <div
                             className="col-detail-cover"
                             style={{ backgroundImage: `url(${detail.cover})` }}
+                        />
+                        <div
+                            className="button-play-all"
+                            title={"播放全部"}
+                            onClick={playAll}
                         />
                         <div className="col-detail-songs">
                             <table>
