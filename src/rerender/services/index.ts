@@ -1,7 +1,7 @@
 import axios from "axios";
 import { baseApi } from "../util/constant.json";
 export const getSongDetail = async (id: number) => {
-    const url = `${baseApi}/song?id=${id}`;
+    const url = `${baseApi}/song/detail?ids=${id}`;
     try {
         const resp = await axios.get(url);
         const { data } = resp;
@@ -45,6 +45,17 @@ export const getPlaylistDetail = async (id: number) => {
 };
 export const getSongUrl = async (id: number) => {
     const url = `${baseApi}/song/url?id=${id}`;
+    try {
+        const resp = await axios.get(url);
+        const { data } = resp;
+        return data;
+    } catch (err) {
+        return {};
+    }
+};
+
+export const getSongCommnets = async (id: number) => {
+    const url = `${baseApi}/comment/music?id=${id}`;
     try {
         const resp = await axios.get(url);
         const { data } = resp;
